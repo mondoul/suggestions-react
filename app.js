@@ -10,6 +10,11 @@ var React = require('react');
 var ReactDOM = require('react-dom/server');
 var Router = require('react-router');
 var routes = require('./frontend-codebase/routes');
+var mongoose = require('mongoose');
+var Suggestion = require('./models/suggestion');
+
+var config = require('./config');
+var suggestions = require('./routes/suggestions');
 
 var app = express();
 
@@ -17,7 +22,6 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -27,6 +31,15 @@ app.use(cookieParser());
 // Here we use the public dir for our FE assets, maybe we want this to be different based on the ENV
 app.use(express.static(path.join(__dirname, 'public')));
 
+mongoose.connect(config.database);
+mongoose.connection.on('error', function() {
+    console.info('Error: Could not connect to MongoDB. Did you forget to run `mongod`?');
+});
+
+// Api routes
+app.use('/api/suggestions', suggestions);
+
+// React routes
 app.use(function(req, res) {
     Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
         if (err) {
