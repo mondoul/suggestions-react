@@ -11,7 +11,7 @@ var ReactDOM = require('react-dom/server');
 var Router = require('react-router');
 var routes = require('./frontend-codebase/routes');
 var mongoose = require('mongoose');
-var Suggestion = require('./models/suggestion');
+var models = require('./models');
 
 var config = require('./config');
 var suggestions = require('./routes/suggestions');
