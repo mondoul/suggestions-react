@@ -20,6 +20,38 @@ router.post('/', function(req, res, next) {
 
 });
 
+// GET Top X suggestions
+router.get('/top/:count?', function (req, res, next) {
+    var top = req.params.count || 10;
+    top = isNaN(top) || top > 100 ? 10 : parseInt(top);
+
+    Suggestion.find()
+        .sort('-likes')
+        .limit(top)
+        .exec(function(err, data) {
+            if (err) return next(err);
+
+            res.send(data);
+        });
+
+});
+
+// GET Last X created suggestions
+router.get('/last/:count?', function (req, res, next) {
+    var last = req.params.count || 10;
+    last = isNaN(last) || last > 100 ? 10 : parseInt(last);
+
+    Suggestion.find()
+        .sort('-created')
+        .limit(last)
+        .exec(function(err, data) {
+            if (err) return next(err);
+
+            res.send(data);
+        });
+
+});
+
 // GET Suggestion
 router.get('/:suggestion_id', function(req, res, next) {
     var id = req.params.suggestion_id;

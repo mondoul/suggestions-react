@@ -7306,3 +7306,32 @@ img.mfp-img {
   width: 75%;
   padding-top: 10px;
 }
+.short-suggestion-component {
+  position: relative;
+  height: 75px;
+  cursor: pointer;
+}
+.short-suggestion-component:hover {
+  background-color: #F8F8F8;
+}
+.short-suggestion-component .votes {
+  width: 40px;
+  text-align: center;
+  display: block;
+  float: left;
+}
+.short-suggestion-component .votes span.likes {
+  font-size: 25px;
+}
+.short-suggestion-component .content {
+  width: 70%;
+  float: left;
+  margin-left: 25px;
+  padding-top: 5px;
+}
+.short-suggestion-component .content span.created {
+  position: absolute;
+  bottom: 5px;
+  font-size: xx-small;
+  right: 5px;
+}
