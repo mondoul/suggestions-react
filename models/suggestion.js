@@ -4,8 +4,7 @@ var suggestionSchema = new mongoose.Schema({
     title: String,
     content: String,
     created: { type: Date, default: Date.now },
-    like: { type: Number, default: 0},
-    dislike: { type: Number, default: 0}
+    likes: { type: Number, default: 0},
 });
 
 // create a query for comments with a blogpost _id matching `id`
@@ -18,11 +17,8 @@ suggestionSchema.statics.likeOrDislike = function (id, isLike, callback) {
     var query = { _id: id };
 
     var update = { $inc : { }};
-    if (isLike) {
-        update.$inc.like = 1;
-    } else {
-        update.$inc.dislike = 1;
-    }
+    update.$inc.likes = isLike ? 1 : -1;
+    console.log('update: ' + JSON.stringify(update));
 
     this.update(query, update, function (err, numAffected) {
         if (err) return callback(err);

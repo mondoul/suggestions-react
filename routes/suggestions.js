@@ -15,7 +15,7 @@ router.post('/', function(req, res, next) {
     }, function (err, sugg) {
         if (err) return next(err);
         console.log('suggestion id ' + sugg.id);
-        res.send({ message: 'New suggestion created' } );
+        res.send({ message: 'New suggestion created : <a href="/suggestion/' + sugg.id + '">click here</a>' } );
     });
 
 });

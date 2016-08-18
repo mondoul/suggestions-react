@@ -7284,3 +7284,25 @@ img.mfp-img {
     padding-right: 6px;
   }
 }
+.navbar-form.navbar-right {
+  margin-right: 0;
+}
+.suggestion-component-container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.suggestion-component-container h2 {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 20px;
+}
+.suggestion-component-container .votes-container {
+  width: 40px;
+  float: left;
+  margin-right: 20px;
+  text-align: center;
+}
+.suggestion-component-container .content {
+  float: left;
+  width: 75%;
+  padding-top: 10px;
+}

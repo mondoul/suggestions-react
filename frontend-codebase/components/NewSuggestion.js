@@ -1,6 +1,5 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { assignIn } from 'lodash';
 import NewSuggestionStore from '../stores/NewSuggestionStore';
 import NewSuggestionActions from '../actions/NewSuggestionActions';
 
