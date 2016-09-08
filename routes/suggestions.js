@@ -8,10 +8,12 @@ var Comment = mongoose.model('Comment');
 router.post('/', function(req, res, next) {
     var title = req.body.title;
     var content = req.body.content;
+    var author = req.body.author;
 
     Suggestion.create({
         title: title,
-        content: content
+        content: content,
+        author: author
     }, function (err, sugg) {
         if (err) return next(err);
         console.log('suggestion id ' + sugg.id);

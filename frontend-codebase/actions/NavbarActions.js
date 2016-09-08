@@ -7,7 +7,10 @@ class NavbarActions {
             'updateAjaxAnimation',
             'updateSearchQuery',
             'findSuggestionSuccess',
-            'findSuggestionFail'
+            'findSuggestionFail',
+            'login',
+            'logout',
+            'profileUpdated'
         );
     }
 

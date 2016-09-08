@@ -44,7 +44,7 @@ class Home extends React.Component {
                 </div>
                 <div className='content'>
                     <span className='title'>{title}</span>
-                    <span className='created'>{timeSince(suggestion.created)} ago</span>
+                    <span className='created'>by {suggestion.author}, {timeSince(suggestion.created)} ago</span>
                 </div>
             </div>
         );

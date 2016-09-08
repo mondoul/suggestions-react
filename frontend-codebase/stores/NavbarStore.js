@@ -7,6 +7,22 @@ class NavbarStore {
         this.searchResultsCount = 0;
         this.searchQuery = '';
         this.ajaxAnimationClass = '';
+        this.authService = null;
+        this.exportPublicMethods({
+           initAuthService: function (authService) {
+               this.authService = authService;
+               this.authenticated = this.authService.loggedIn();
+           }.bind(this)
+        });
+    }
+
+    onLogout() {
+        this.authenticated = this.authService.loggedIn();
+
+    }
+
+    onProfileUpdated() {
+        this.authenticated = this.authService.loggedIn();
     }
 
     onFindSuggestionSuccess(payload) {

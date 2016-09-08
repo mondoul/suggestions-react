@@ -3,8 +3,10 @@ var mongoose = require('mongoose');
 var suggestionSchema = new mongoose.Schema({
     title: String,
     content: String,
+    author: String,
     created: { type: Date, default: Date.now },
     likes: { type: Number, default: 0},
+    voters: []
 });
 
 // create a query for comments with a blogpost _id matching `id`

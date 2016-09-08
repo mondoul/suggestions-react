@@ -14,11 +14,11 @@ class NewSuggestionActions {
         );
     }
 
-    addSuggestion(title, content) {
+    addSuggestion(title, content, email) {
         $.ajax({
             type: 'POST',
             url: '/api/suggestions',
-            data: { title: title, content: content }
+            data: { title: title, content: content, author: email }
         }).done((data) => {
             this.actions.addSuggestionSuccess(data.message);
         }).fail((jqXhr) => {
