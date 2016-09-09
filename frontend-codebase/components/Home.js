@@ -1,5 +1,5 @@
 import React from 'react';
-import timeSince from '../utils/timeago';
+import SingleSuggestion from './SingleSuggestion';
 import SuggestionListStore from '../stores/SuggestionListStore';
 import SuggestionListActions from '../actions/SuggestionListActions';
 
@@ -24,10 +24,6 @@ class Home extends React.Component {
         this.setState(state);
     }
 
-    navigate(id) {
-        this.props.history.pushState(null, '/suggestion/' + id);
-    }
-
     renderShortSuggestion(suggestion, index) {
         let maxLength = 100;
         let title = suggestion.title;
@@ -36,17 +32,10 @@ class Home extends React.Component {
             title = title.substring(0, maxLength) + '...';
         }
 
+        suggestion.title = title;
+
         return (
-            <div className='short-suggestion-component list-group-item' key={suggestion._id} onClick={this.navigate.bind(this, suggestion._id)}>
-                <div className='votes'>
-                    <span className='likes'>{suggestion.likes}</span>
-                    <label>Points</label>
-                </div>
-                <div className='content'>
-                    <span className='title'>{title}</span>
-                    <span className='created'>by {suggestion.author}, {timeSince(suggestion.created)} ago</span>
-                </div>
-            </div>
+            <SingleSuggestion key={suggestion._id} suggestion={suggestion} history={this.props.history} />
         );
     }
 

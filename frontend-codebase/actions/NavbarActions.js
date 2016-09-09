@@ -5,25 +5,10 @@ class NavbarActions {
     constructor() {
         this.generateActions(
             'updateAjaxAnimation',
-            'updateSearchQuery',
-            'findSuggestionSuccess',
-            'findSuggestionFail',
             'login',
             'logout',
             'profileUpdated'
         );
-    }
-
-    findSuggestions(payload) {
-        // $.ajax({
-        //     url: '/api/suggestions/search',
-        //     data: { text: payload.searchQuery }
-        // }).done((data) => {
-        //     assignIn(payload, data);
-        //     this.actions.findSuggestionSuccess(payload);
-        // }).fail(() => {
-        //     this.actions.findSuggestionsFail(payload);
-        // });
     }
 }
 

@@ -11,8 +11,8 @@ class SearchResultsActions {
     searchSuggestions(query) {
         $.ajax({
             type: 'GET',
-            url: '/api/suggestions/search',
-            data: query
+            url: '/api/suggestions/find',
+            data: {term : query}
         }).done((data) => {
             this.actions.getResultsSuccess(data);
         }).fail((jqXhr) => {

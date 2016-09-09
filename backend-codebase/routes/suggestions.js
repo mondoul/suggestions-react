@@ -62,6 +62,21 @@ router.get('/last/:count?', function (req, res, next) {
 
 });
 
+router.get('/find', function (req, res, next) {
+    var re = new RegExp(req.query.term, 'i');
+
+    Suggestion.find()
+              .or([{ 'title': { $regex: re }},
+                   { 'content': { $regex: re }},
+                   { 'author' : { $regex: re }}])
+              .sort('-created')
+              .exec(function(err, data) {
+                  if (err) return next(err);
+
+                  res.send(data);
+             });
+});
+
 // GET Suggestion
 router.get('/:suggestion_id', function(req, res, next) {
     var id = req.params.suggestion_id;

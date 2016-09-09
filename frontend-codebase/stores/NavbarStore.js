@@ -4,8 +4,6 @@ import NavbarActions from '../actions/NavbarActions';
 class NavbarStore {
     constructor() {
         this.bindActions(NavbarActions);
-        this.searchResultsCount = 0;
-        this.searchQuery = '';
         this.ajaxAnimationClass = '';
         this.authService = null;
         this.exportPublicMethods({
@@ -25,23 +23,8 @@ class NavbarStore {
         this.authenticated = this.authService.loggedIn();
     }
 
-    onFindSuggestionSuccess(payload) {
-        //payload.history.pushState(null, '/characters/' + payload.characterId);
-    }
-
-    onFindSuggestionFail(payload) {
-        payload.searchForm.classList.add('shake');
-        setTimeout(() => {
-            payload.searchForm.classList.remove('shake');
-        }, 1000);
-    }
-
     onUpdateAjaxAnimation(className) {
         this.ajaxAnimationClass = className; //fadein or fadeout
-    }
-
-    onUpdateSearchQuery(event) {
-        this.searchQuery = event.target.value;
     }
 }
 

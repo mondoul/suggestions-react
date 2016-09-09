@@ -3,6 +3,7 @@ import { Route, IndexRoute, IndexRedirect } from 'react-router';
 import App from './components/App';
 import Home from './components/Home';
 import Suggestion from './components/Suggestion';
+import SearchResults from './components/SearchResults';
 import AuthService from './utils/AuthService';
 import config from './config';
 
@@ -27,5 +28,6 @@ export default (
     <Route path='/' component={App} auth={auth} onEnter={parseAuthHash}>
         <IndexRoute component={Home}/>
         <Route path='suggestion/:id' component={Suggestion} />
+        <Route path='search/:term' component={SearchResults} />
     </Route>
 );

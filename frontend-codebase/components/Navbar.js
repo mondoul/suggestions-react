@@ -1,6 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {Link} from 'react-router';
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import NewSuggestion from './NewSuggestion';
 import Login from './Login';
 import NavbarStore from '../stores/NavbarStore';
@@ -48,18 +48,19 @@ class Navbar extends React.Component {
         this.refs.newSuggestionBtn.open();
     }
 
-    handleSubmit(event) {
+    processSearchQuery(event) {
         event.preventDefault();
 
-        let searchQuery = this.state.searchQuery.trim();
+        let searchQuery = ReactDOM.findDOMNode(this.refs.searchQuery).value.trim();
 
-        if (searchQuery) {
-            NavbarActions.findSuggestions({
-                searchQuery: searchQuery,
-                searchForm: this.refs.searchForm,
-                history: this.props.history
-            });
+        console.log('query', searchQuery);
+
+        if (searchQuery && searchQuery.length > 2) {
+            this.props.history.pushState(null, '/search/' + searchQuery);
+        } else {
+            this.props.history.pushState(null, '/');
         }
+
     }
 
     login(event) {
@@ -113,11 +114,11 @@ class Navbar extends React.Component {
                             <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={this.login.bind(this)}>Login</button>
                         )
                     }
-                    <form ref='searchForm' className='navbar-form navbar-right animated' onSubmit={this.handleSubmit.bind(this)}>
+                    <form ref='searchForm' className='navbar-form navbar-right animated' onSubmit={this.processSearchQuery.bind(this)}>
                         <div className='input-group'>
-                            <input type='text' className='form-control' placeholder='Search suggestions...' value={this.state.searchQuery} onChange={NavbarActions.updateSearchQuery} />
+                            <input type='text' className='form-control' placeholder='Search suggestions...' ref='searchQuery' onChange={this.processSearchQuery.bind(this)} />
                             <span className='input-group-btn'>
-                                <button className='btn btn-default' onClick={this.handleSubmit.bind(this)}>
+                                <button className='btn btn-default' onClick={this.processSearchQuery.bind(this)}>
                                     <span className='glyphicon glyphicon-search'></span>
                                 </button>
                             </span>
