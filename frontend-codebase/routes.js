@@ -4,8 +4,9 @@ import App from './components/App';
 import Home from './components/Home';
 import Suggestion from './components/Suggestion';
 import AuthService from './utils/AuthService';
+import config from './config';
 
-const auth = new AuthService('ClohFBYJyM7q0Nc6y9tY5blht98wjaBw', 'suggestions.auth0.com','http://localhost:3000');
+const auth = new AuthService(config.auth0ClientId, config.auth0Domain, config.callbackUrl);
 
 // onEnter callback to validate authentication in private routes
 const requireAuth = (nextState, replace) => {
@@ -17,7 +18,6 @@ const requireAuth = (nextState, replace) => {
 // OnEnter for callback url to parse access_token
 const parseAuthHash = (nextState, replace) => {
     if (nextState.location.hash) {
-        console.log('next state', JSON.stringify(nextState));
         var returnUrl = auth.parseHash(nextState.location.hash);
         replace({ pathname: returnUrl });
     }

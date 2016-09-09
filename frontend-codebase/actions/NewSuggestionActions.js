@@ -1,4 +1,4 @@
-import alt from '../alt';
+import alt from '../utils/alt';
 
 class NewSuggestionActions {
     constructor() {
@@ -14,11 +14,14 @@ class NewSuggestionActions {
         );
     }
 
-    addSuggestion(title, content, email) {
+    addSuggestion(title, content, token) {
         $.ajax({
             type: 'POST',
             url: '/api/suggestions',
-            data: { title: title, content: content, author: email }
+            data: { title: title, content: content },
+            headers: {
+                'Authorization' : 'Bearer ' + token
+            }
         }).done((data) => {
             this.actions.addSuggestionSuccess(data.message);
         }).fail((jqXhr) => {

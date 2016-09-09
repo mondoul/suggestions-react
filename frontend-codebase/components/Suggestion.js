@@ -8,7 +8,7 @@ class Suggestion extends React.Component {
         super(props);
         this.state = SuggestionStore.getState();
         this.onChange = this.onChange.bind(this);
-
+        this.authToken = this.props.auth.getToken();
     }
 
     componentDidMount() {
@@ -25,11 +25,11 @@ class Suggestion extends React.Component {
     }
 
     like() {
-            SuggestionActions.likeSuggestion(this.props.params.id);
+        SuggestionActions.likeSuggestion(this.props.params.id, this.authToken);
     }
 
     dislike() {
-        SuggestionActions.dislikeSuggestion(this.props.params.id);
+        SuggestionActions.dislikeSuggestion(this.props.params.id, this.authToken);
     }
 
     render() {

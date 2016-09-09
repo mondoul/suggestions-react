@@ -32,7 +32,7 @@ class NewSuggestion extends React.Component {
 
         let title = this.state.title.trim();
         let content = this.state.content.trim();
-        let profile = this.props.auth.getProfile();
+        let token = this.props.auth.getToken();
 
         if (!title) {
             NewSuggestionActions.invalidTitle();
@@ -45,7 +45,7 @@ class NewSuggestion extends React.Component {
         }
 
         if (title && content) {
-            NewSuggestionActions.addSuggestion(title, content, profile.email);
+            NewSuggestionActions.addSuggestion(title, content, token);
             SuggestionListActions.getLastSuggestions();
         }
 

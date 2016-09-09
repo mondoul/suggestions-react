@@ -1,0 +1,23 @@
+db:
+  image: mongo
+  ports:
+    - 27017:27017
+  command: "--smallfiles --logpath=/dev/null"
+  environment:
+      DNSDOCK_NAME: db
+      DNSDOCK_IMAGE: webservice
+web:
+  image: amondoulet/node-alpine
+  entrypoint: /app/scripts/dev-entrypoint.sh
+  volumes:
+    - ./backend-codebase:/app
+    - ./frontend-codebase/dist:/app/public/
+  ports:
+    - "80:3000"
+  links:
+    - db
+  environment:
+    AUTH0_SECRET: xIOzOMRQX8tBgDKds9iEZLMWb72H2qovgDzUldgDanmaHes3vzancY9-zz58O4Bw
+    AUTH0_CLIENTID: ClohFBYJyM7q0Nc6y9tY5blht98wjaBw
+    PORT: 3000
+    NODE_ENV: development

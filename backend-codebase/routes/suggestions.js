@@ -1,14 +1,22 @@
 var express = require('express');
+var config = require('../config');
 var router = express.Router();
 var mongoose = require('mongoose')
 var Suggestion = mongoose.model('Suggestion');
 var Comment = mongoose.model('Comment');
+var jwt = require('express-jwt');
+var _ = require('lodash');
+
+const authCheck = jwt({
+    secret: new Buffer(config.auth0Secret, 'base64'),
+    audience: config.auth0ClientId
+});
 
 // POST Suggestion
-router.post('/', function(req, res, next) {
+router.post('/', authCheck, function(req, res, next) {
     var title = req.body.title;
     var content = req.body.content;
-    var author = req.body.author;
+    var author = req.user.email;
 
     Suggestion.create({
         title: title,
@@ -72,7 +80,7 @@ router.get('/:suggestion_id', function(req, res, next) {
 });
 
 // DELETE Suggestion
-router.delete('/:suggestion_id', function (req, res, next) {
+router.delete('/:suggestion_id', authCheck,  function (req, res, next) {
     var id = req.params.suggestion_id;
     Suggestion.findById(id).exec(function (err, sugg) {
         if (err) return next(err);
@@ -87,21 +95,53 @@ router.delete('/:suggestion_id', function (req, res, next) {
 });
 
 // PUT Suggestion, update counters
-router.put('/:suggestion_id/like', function (req, res, next) {
-    Suggestion.likeOrDislike(req.params.suggestion_id, true, function (err) {
+router.put('/:suggestion_id/like', authCheck, function (req, res, next) {
+    var id = req.params.suggestion_id;
+    var email = req.user.email;
+    console.log('user', JSON.stringify(req.user));
+    
+    Suggestion.findById(id).exec(function (err, sugg) {
         if (err) return next(err);
 
-        res.send({ message : 'Vote accepted!'});
+        if(!sugg) return next();
+
+        console.log('suggestion', JSON.stringify(sugg));
+        if (_.find(sugg.voters, function (item) { return item === req.user.email;})) {
+            res.send({ message : 'You have already voted for that suggestion.', type: 'warning'});
+        }
+        else {
+            Suggestion.likeOrDislike(id, email, true, function (err) {
+                if (err) return next(err);
+
+                res.send({ message : 'Vote accepted!', type: 'success'});
+            });
+        }
     });
 });
 
 // PUT Suggestion, update counters
-router.put('/:suggestion_id/dislike', function (req, res, next) {
-    Suggestion.likeOrDislike(req.params.suggestion_id, false, function (err) {
+router.put('/:suggestion_id/dislike', authCheck, function (req, res, next) {
+    var id = req.params.suggestion_id;
+    var email = req.user.email;
+    Suggestion.findById(id).exec(function (err, sugg) {
         if (err) return next(err);
 
-        res.send({ message : 'Vote accepted!'});
-    });});
+        if(!sugg) return next();
+
+        console.log('suggestion', JSON.stringify(sugg));
+
+        if (_.find(sugg.voters, function (item) { return item === req.user.email;})) {
+            res.send({ message : 'You have already voted for that suggestion.', type: 'warning'});
+        }
+        else {
+            Suggestion.likeOrDislike(id, email, false, function (err) {
+                if (err) return next(err);
+
+                res.send({ message : 'Vote accepted!', type: 'success'});
+            });
+        }
+    });
+});
 
 
 module.exports = router;

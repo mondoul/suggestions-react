@@ -1,4 +1,4 @@
-import alt from '../alt';
+import alt from '../utils/alt';
 import {assignIn} from 'lodash';
 import SuggestionActions from '../actions/SuggestionActions';
 
@@ -20,18 +20,26 @@ class SuggestionStrore {
         toastr.error(message);
     }
 
-    onLikeSuggestionSuccess(message) {
-        this.suggestion.likes++;
-        toastr.success(message);
+    onLikeSuggestionSuccess(data) {
+        if (data.type === 'success') {
+            this.suggestion.likes++;
+            toastr.success(data.message);
+        } else {
+            toastr.warning(data.message);
+        }
     }
 
     onLikeSuggestionFail(message) {
         toastr.error(message);
     }
 
-    onDislikeSuggestionSuccess(message) {
-        this.suggestion.likes--;
-        toastr.success(message);
+    onDislikeSuggestionSuccess(data) {
+        if (data.type === 'success') {
+            this.suggestion.likes--;
+            toastr.success(data.message);
+        } else {
+            toastr.warning(data.message);
+        }
     }
 
     onDislikeSuggestionFail(message) {

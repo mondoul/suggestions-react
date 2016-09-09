@@ -1,4 +1,4 @@
-import alt from '../alt';
+import alt from '../utils/alt';
 import {assignIn} from 'lodash';
 
 class NavbarActions {

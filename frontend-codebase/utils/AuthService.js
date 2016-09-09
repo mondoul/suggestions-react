@@ -4,12 +4,13 @@ import NavbarActions from '../actions/NavbarActions';
 
 class AuthService {
     constructor(clientId, domain, callbackUrl) {
+
         // Configure Auth0
         this.auth0 = new Auth0({
             clientID: clientId,
             domain: domain,
-            callbackURL: callbackUrl,
-            responseType: 'token'
+            responseType: 'token',
+            callbackURL: callbackUrl
         });
 
         this.login = this.login.bind(this);
@@ -18,6 +19,7 @@ class AuthService {
 
     login(params, onError){
         localStorage.setItem('returnUrl', window.location.pathname);
+        params.scope = 'openid email'; // adding the email to the JWT
         this.auth0.login(params, onError);
     }
 
@@ -27,7 +29,6 @@ class AuthService {
 
     parseHash(hash){
         const authResult = this.auth0.parseHash(hash);
-        console.log('result', JSON.stringify(authResult));
         if (authResult && authResult.idToken) {
             this.setToken(authResult.idToken);
             this.auth0.getProfile(authResult.idToken, (error, profile) => {

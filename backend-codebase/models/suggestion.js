@@ -14,11 +14,11 @@ suggestionSchema.statics.findComments = function (id, callback) {
     return this.model('Comment').find({ post: id }, callback);
 };
 
-suggestionSchema.statics.likeOrDislike = function (id, isLike, callback) {
+suggestionSchema.statics.likeOrDislike = function (id, email, isLike, callback) {
 
     var query = { _id: id };
 
-    var update = { $inc : { }};
+    var update = { $inc : { }, $push : { voters : email}};
     update.$inc.likes = isLike ? 1 : -1;
     console.log('update: ' + JSON.stringify(update));
 
