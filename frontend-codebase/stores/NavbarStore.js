@@ -6,6 +6,7 @@ class NavbarStore {
         this.bindActions(NavbarActions);
         this.ajaxAnimationClass = '';
         this.authService = null;
+        this.searchQuery = '';
         this.exportPublicMethods({
            initAuthService: function (authService) {
                this.authService = authService;
@@ -21,6 +22,10 @@ class NavbarStore {
 
     onProfileUpdated() {
         this.authenticated = this.authService.loggedIn();
+    }
+
+    onQueryChanged(query) {
+        this.searchQuery = query;
     }
 
     onUpdateAjaxAnimation(className) {

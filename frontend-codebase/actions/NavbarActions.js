@@ -7,7 +7,8 @@ class NavbarActions {
             'updateAjaxAnimation',
             'login',
             'logout',
-            'profileUpdated'
+            'profileUpdated',
+            'queryChanged'
         );
     }
 }

@@ -27,7 +27,7 @@ class SingleSuggestion extends React.Component {
 }
 
 SingleSuggestion.propTypes = {
-    suggestion: React.PropTypes.object
+    suggestion: React.PropTypes.any.isRequired
 };
 
 export default withRouter(SingleSuggestion);

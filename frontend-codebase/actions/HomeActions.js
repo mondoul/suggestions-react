@@ -1,12 +1,13 @@
 import alt from '../utils/alt';
 
-class SuggestionListActions {
+class HomeActions {
     constructor() {
         this.generateActions(
             'getTopSuggestionsSuccess',
             'getTopSuggestionsFail',
             'getLastSuggestionsSuccess',
-            'getLastSuggestionsFail'
+            'getLastSuggestionsFail',
+            'noResultsFound'
         );
     }
 
@@ -34,4 +35,4 @@ class SuggestionListActions {
 
 }
 
-export default alt.createActions(SuggestionListActions);
+export default alt.createActions(HomeActions);

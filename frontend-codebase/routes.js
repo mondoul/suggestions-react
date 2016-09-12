@@ -28,6 +28,6 @@ export default (
     <Route path='/' component={App} auth={auth} onEnter={parseAuthHash}>
         <IndexRoute component={Home}/>
         <Route path='suggestion/:id' component={Suggestion} />
-        <Route path='search/:term' component={SearchResults} />
+        <Route path='search/' component={SearchResults} />
     </Route>
 );

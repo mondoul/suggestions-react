@@ -1,14 +1,22 @@
 import alt from '../utils/alt';
 import {assignIn} from 'lodash';
-import SuggestionListActions from '../actions/SuggestionListActions';
+import HomeActions from '../actions/HomeActions';
 
-class SuggestionListStore {
+class HomeStore {
     constructor() {
-        this.bindActions(SuggestionListActions);
+        this.bindActions(HomeActions);
         this.topSuggestions = [];
         this.lastCreated = [];
+        this.hasNoResults = false;
+        this.searchTerms = '';
         this.topSuggestionDefault = '';
         this.lastSuggestionDefault = '';
+
+    }
+
+    onNoResults(terms) {
+        this.searchTerms = terms;
+        this.hasNoResults = true;
     }
 
     onGetTopSuggestionsSuccess(data) {
@@ -29,4 +37,4 @@ class SuggestionListStore {
 
 }
 
-export default alt.createStore(SuggestionListStore);
+export default alt.createStore(HomeStore);

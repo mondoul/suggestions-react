@@ -1,7 +1,9 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import SingleSuggestion from './SingleSuggestion';
 import SearchResultsStore from '../stores/SearchResultsStore';
-import SearchResultsActions from '../actions/SearchResultsActions';
+import SearchActions from '../actions/SearchActions';
+import NavbarActions from '../actions/NavbarActions';
 
 class SearchResults extends React.Component {
     constructor(props) {
@@ -12,11 +14,19 @@ class SearchResults extends React.Component {
 
     componentDidMount() {
         SearchResultsStore.listen(this.onChange);
-        SearchResultsActions.searchSuggestions(this.props.params.term);
+        SearchActions.searchSuggestions(this.props.location.query.q);
+        NavbarActions.queryChanged(this.props.location.query.q);
     }
 
     componentWillUnmount() {
         SearchResultsStore.unlisten(this.onChange);
+    }
+
+    componentDidUpdate() {
+        if (this.props.location.query.q !== this.state.term) {
+            SearchActions.searchSuggestions(this.props.location.query.q);
+            NavbarActions.queryChanged(this.props.location.query.q);
+        }
     }
 
     onChange(state) {
@@ -26,15 +36,17 @@ class SearchResults extends React.Component {
     render() {
         let results = this.state.results.map(function (suggestion, index) {
             return (
-                <SingleSuggestion key={suggestion._id} suggestion={suggestion} history={this.props.history}/>
+                <SingleSuggestion key={suggestion._id} suggestion={suggestion} />
             );
         }.bind(this));
+
+        let title = this.state.results.length > 0 ? 'Search Results' : 'No results';
 
         return (
             <div className='container-fluid'>
                 <div className='row'>
                     <div className='col-sm-12'>
-                        <h2>Search results</h2>
+                        <h2>{title}</h2>
                         <div className='list-group animate fade-in'>
                             {results}
                         </div>
@@ -46,4 +58,4 @@ class SearchResults extends React.Component {
 
 }
 
-export default SearchResults;
+export default withRouter(SearchResults);

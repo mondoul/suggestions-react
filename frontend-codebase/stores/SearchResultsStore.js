@@ -1,19 +1,22 @@
 import alt from '../utils/alt';
-import SearchResultsActions from '../actions/SearchResultsActions';
+import SearchActions from '../actions/SearchActions';
 
 
 class SearchResultsStore {
     constructor() {
-        this.bindActions(SearchResultsActions);
+        this.bindActions(SearchActions);
+        this.term = '';
         this.results = [];
     }
 
-    onGetResultsSuccess(data) {
-        this.results = data;
+    onGetResultsSuccess(res) {
+        this.term = res.query;
+        this.results = res.data;
     }
 
-    onGetResultsFail(err) {
-        toastr.error(err);
+    onGetResultsFail(res) {
+        this.term = res.query;
+        toastr.error(res.err);
     }
 }
 

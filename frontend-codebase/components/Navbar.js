@@ -10,7 +10,7 @@ import NavbarActions from '../actions/NavbarActions';
 class Navbar extends React.Component {
     constructor(props) {
         super(props);
-        NavbarStore.initAuthService(props.auth); // passign the AuthService to the Store
+        NavbarStore.initAuthService(props.auth); // passing the AuthService to the Store
         this.state = NavbarStore.getState();
         this.onChange = this.onChange.bind(this);
     }
@@ -54,11 +54,10 @@ class Navbar extends React.Component {
 
         let searchQuery = ReactDOM.findDOMNode(this.refs.searchQuery).value.trim();
 
-        console.log('query', searchQuery);
-
         if (searchQuery && searchQuery.length > 2) {
-            this.props.router.push('/search/' + searchQuery);
+            this.props.router.push('/search/?q=' + encodeURIComponent(searchQuery));
         } else {
+            NavbarActions.queryChanged(searchQuery);
             this.props.router.push('/');
         }
 
@@ -117,7 +116,7 @@ class Navbar extends React.Component {
                     }
                     <form ref='searchForm' className='navbar-form navbar-right animated' onSubmit={this.processSearchQuery.bind(this)}>
                         <div className='input-group'>
-                            <input type='text' className='form-control' placeholder='Search suggestions...' ref='searchQuery' onChange={this.processSearchQuery.bind(this)} />
+                            <input type='text' className='form-control' placeholder='Search suggestions...' ref='searchQuery' value={this.state.searchQuery} onChange={this.processSearchQuery.bind(this)} />
                             <span className='input-group-btn'>
                                 <button className='btn btn-default' onClick={this.processSearchQuery.bind(this)}>
                                     <span className='glyphicon glyphicon-search'></span>
@@ -129,7 +128,6 @@ class Navbar extends React.Component {
                 <NewSuggestion ref='newSuggestionBtn' auth={this.props.auth}/>
                 <Login ref='loginBtn' auth={this.props.auth} />
             </nav>
-
         );
     }
 }
