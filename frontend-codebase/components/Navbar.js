@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import ReactDOM from 'react-dom';
-import {Link} from 'react-router';
+import {Link, withRouter} from 'react-router';
+import AuthService from '../utils/AuthService';
 import NewSuggestion from './NewSuggestion';
 import Login from './Login';
 import NavbarStore from '../stores/NavbarStore';
@@ -56,9 +57,9 @@ class Navbar extends React.Component {
         console.log('query', searchQuery);
 
         if (searchQuery && searchQuery.length > 2) {
-            this.props.history.pushState(null, '/search/' + searchQuery);
+            this.props.router.push('/search/' + searchQuery);
         } else {
-            this.props.history.pushState(null, '/');
+            this.props.router.push('/');
         }
 
     }
@@ -126,11 +127,15 @@ class Navbar extends React.Component {
                     </form>
                 </div>
                 <NewSuggestion ref='newSuggestionBtn' auth={this.props.auth}/>
-                <Login ref='loginBtn' auth={this.props.auth}/>
+                <Login ref='loginBtn' auth={this.props.auth} />
             </nav>
 
         );
     }
 }
 
-export default Navbar;
+Navbar.propTypes = {
+    auth: T.instanceOf(AuthService)
+};
+
+export default withRouter(Navbar);

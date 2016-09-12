@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { PropTypes as T } from 'react';
 import ReactDOM from 'react-dom';
+import AuthService from '../utils/AuthService';
 import { Modal, Form, FormGroup, FormControl, ControlLabel, Button, ButtonToolbar } from 'react-bootstrap';
 
 class Login extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -77,8 +77,10 @@ class Login extends React.Component {
         </Modal>
         );
     }
-
-
 }
+
+Login.propTypes = {
+    auth: T.instanceOf(AuthService)
+};
 
 export default Login;

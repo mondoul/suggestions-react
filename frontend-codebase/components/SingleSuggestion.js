@@ -1,10 +1,11 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import timeSince from '../utils/timeago';
 
 class SingleSuggestion extends React.Component {
 
     navigate(id) {
-        this.props.history.pushState(null, '/suggestion/' + id);
+        this.props.router.push('/suggestion/' + id);
     }
 
     render() {
@@ -25,4 +26,8 @@ class SingleSuggestion extends React.Component {
     }
 }
 
-export default SingleSuggestion;
+SingleSuggestion.propTypes = {
+    suggestion: React.PropTypes.object
+};
+
+export default withRouter(SingleSuggestion);

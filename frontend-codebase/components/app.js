@@ -13,7 +13,7 @@ class App extends React.Component {
 
         return (
           <div>
-            <Navbar history={this.props.history} auth={this.props.route.auth} />
+            <Navbar auth={this.props.route.auth} />
             {children}
           </div>
         );
