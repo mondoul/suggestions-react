@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import NewSuggestionStore from '../stores/NewSuggestionStore';
 import NewSuggestionActions from '../actions/NewSuggestionActions';
-import SuggestionListActions from '../actions/SuggestionListActions';
+import HomeActions from '../actions/HomeActions';
 
 class NewSuggestion extends React.Component {
     constructor(props) {
@@ -46,7 +46,7 @@ class NewSuggestion extends React.Component {
 
         if (title && content) {
             NewSuggestionActions.addSuggestion(title, content, token);
-            SuggestionListActions.getLastSuggestions();
+            HomeActions.getLastSuggestions();
         }
 
     }
