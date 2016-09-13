@@ -18,16 +18,6 @@ class Navbar extends React.Component {
     componentDidMount()  {
         NavbarStore.listen(this.onChange);
 
-        $(document).ajaxStart(() => {
-            NavbarActions.updateAjaxAnimation('fadeIn');
-        });
-
-        $(document).ajaxComplete(() => {
-            setTimeout(() => {
-                NavbarActions.updateAjaxAnimation('fadeOut');
-            }, 750);
-        });
-
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });

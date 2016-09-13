@@ -35,7 +35,7 @@ class Home extends React.Component {
         suggestion.title = title;
 
         return (
-            <SingleSuggestion key={suggestion._id} suggestion={suggestion} history={this.props.history} />
+            <SingleSuggestion key={suggestion._id} suggestion={suggestion} />
         );
     }
 
