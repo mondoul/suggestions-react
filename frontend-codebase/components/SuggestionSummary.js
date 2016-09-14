@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {PropTypes, Component} from 'react';
 import { withRouter } from 'react-router';
 import timeSince from '../utils/timeago';
 
-class SingleSuggestion extends React.Component {
+class SuggestionSummary extends Component {
 
     navigate(id) {
         this.props.router.push('/suggestion/' + id);
@@ -26,8 +26,8 @@ class SingleSuggestion extends React.Component {
     }
 }
 
-SingleSuggestion.propTypes = {
-    suggestion: React.PropTypes.any.isRequired
+SuggestionSummary.propTypes = {
+    suggestion: PropTypes.any.isRequired
 };
 
-export default withRouter(SingleSuggestion);
+export default withRouter(SuggestionSummary);

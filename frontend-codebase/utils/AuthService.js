@@ -1,6 +1,5 @@
 import { isTokenExpired } from './jwtHelpers';
 import Auth0 from 'auth0-js';
-import NavbarActions from '../actions/NavbarActions';
 
 class AuthService {
     constructor(clientId, domain, callbackUrl) {
@@ -15,6 +14,7 @@ class AuthService {
 
         this.login = this.login.bind(this);
         this.signup = this.signup.bind(this);
+        console.log('new AuthService');
     }
 
     login(params, onError){
@@ -54,8 +54,6 @@ class AuthService {
     setProfile(profile){
         // Saves profile data to localStorage
         localStorage.setItem('profile', JSON.stringify(profile));
-        // Triggers profile_updated event to update the UI
-        NavbarActions.profileUpdated();
     }
 
     getProfile(){
@@ -78,7 +76,6 @@ class AuthService {
         // Clear user token and profile data from localStorage
         localStorage.removeItem('id_token');
         localStorage.removeItem('profile');
-        NavbarActions.logout();
     }
 }
 

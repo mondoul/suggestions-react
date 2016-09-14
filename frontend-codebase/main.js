@@ -1,6 +1,14 @@
-import React from 'react';
-import {Router, browserHistory} from 'react-router';
-import ReactDOM from 'react-dom';
-import routes from './routes';
+import 'babel-polyfill';
 
-ReactDOM.render(<Router history={browserHistory} routes={routes}/>, document.querySelector('#app') );
+import React from 'react';
+import { render } from 'react-dom';
+import Root from './containers/Root';
+import configureStore from './actions/configureStore';
+
+const store = configureStore();
+
+render(
+    <Root store={store}/>,
+    document.querySelector('#app')
+);
+

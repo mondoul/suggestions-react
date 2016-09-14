@@ -12,15 +12,21 @@
     "alt": "^0.17.8",
     "async": "^1.5.0",
     "auth0-js": "^7.1.0",
+    "babel-polyfill": "^6.13.0",
     "colors": "^1.1.2",
     "compression": "^1.6.0",
     "concurrently": "^2.2.0",
+    "isomorphic-fetch": "^2.2.1",
     "jwt-decode": "^2.1.0",
     "lodash": "^4.14.2",
     "react": "^15.0.2",
     "react-bootstrap": "^0.30.2",
     "react-dom": "^15.0.2",
-    "react-router": "^2.4.0"
+    "react-redux": "^4.4.5",
+    "react-router": "^2.4.0",
+    "redux": "^3.6.0",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.1.19",

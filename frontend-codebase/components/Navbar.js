@@ -1,69 +1,17 @@
-import React, { PropTypes as T } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component, PropTypes } from 'react';
 import {Link, withRouter} from 'react-router';
-import AuthService from '../utils/AuthService';
-import NewSuggestion from './NewSuggestion';
+import { connect } from 'react-redux';
+import Modal from './Modal';
 import Login from './Login';
-import NavbarStore from '../stores/NavbarStore';
-import NavbarActions from '../actions/NavbarActions';
+import { openLoginModal, closeLoginModal, logout } from '../actions/uiActions';
+import AuthService from '../utils/AuthService';
 
-class Navbar extends React.Component {
-    constructor(props) {
-        super(props);
-        NavbarStore.initAuthService(props.auth); // passing the AuthService to the Store
-        this.state = NavbarStore.getState();
-        this.onChange = this.onChange.bind(this);
-    }
+class Navbar extends Component {
 
-    componentDidMount()  {
-        NavbarStore.listen(this.onChange);
-
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    }
-
-    componentDidUpdate() {
-        $('[data-toggle="tooltip"]').tooltip();
-    }
-
-    componentWillUnmount() {
-        NavbarStore.unlisten(this.onChange);
-    }
-
-    onChange(state) {
-        this.setState(state);
-    }
-
-    newSuggestion(event) {
-        this.refs.newSuggestionBtn.open();
-    }
-
-    processSearchQuery(event) {
-        event.preventDefault();
-
-        let searchQuery = ReactDOM.findDOMNode(this.refs.searchQuery).value.trim();
-
-        if (searchQuery && searchQuery.length > 2) {
-            this.props.router.push('/search/?q=' + encodeURIComponent(searchQuery));
-        } else {
-            NavbarActions.queryChanged(searchQuery);
-            this.props.router.push('/');
-        }
-
-    }
-
-    login(event) {
-        event.preventDefault();
-        this.refs.loginBtn.open();
-    }
-
-    logout(event) {
-        event.preventDefault();
-        this.props.auth.logout();
-    }
 
     render() {
+
+        const { dispatch, showLogin, auth, isAuthenticated } = this.props;
 
         return (
             <nav className='navbar navbar-default navbar-static-top'>
@@ -75,55 +23,40 @@ class Navbar extends React.Component {
                         <span className='icon-bar'></span>
                     </button>
                     <Link to='/' className='navbar-brand'>
-                        <span ref='triangles' className={'triangles animated ' + this.state.ajaxAnimationClass}>
-                          <div className='tri invert'></div>
-                          <div className='tri invert'></div>
-                          <div className='tri'></div>
-                          <div className='tri invert'></div>
-                          <div className='tri invert'></div>
-                          <div className='tri'></div>
-                          <div className='tri invert'></div>
-                          <div className='tri'></div>
-                          <div className='tri invert'></div>
-                        </span>
                         Suggestions
                     </Link>
                 </div>
                 <div id='navbar' className='navbar-collapse collapse'>
                     {
-                        this.state.authenticated ? (
-                            <button type="button" className="btn btn-success navbar-btn" onClick={this.newSuggestion.bind(this)}>New</button>
-                        ) : (
-                            <button type="button" className="btn btn-success navbar-btn disabled" data-toggle='tooltip' data-placement='bottom' title='Login or Sign up to post a new suggestion'>New</button>
-                        )
+                        isAuthenticated &&
+                        <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={() => dispatch(logout())}>Logout</button>
                     }
                     {
-                        this.state.authenticated ? (
-                            <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={this.logout.bind(this)}>Logout</button>
-                        ) : (
-                            <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={this.login.bind(this)}>Login</button>
-                        )
+                        !isAuthenticated &&
+                        <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={() => dispatch(openLoginModal())}>Login</button>
                     }
-                    <form ref='searchForm' className='navbar-form navbar-right animated' onSubmit={this.processSearchQuery.bind(this)}>
-                        <div className='input-group'>
-                            <input type='text' className='form-control' placeholder='Search suggestions...' ref='searchQuery' value={this.state.searchQuery} onChange={this.processSearchQuery.bind(this)} />
-                            <span className='input-group-btn'>
-                                <button className='btn btn-default' onClick={this.processSearchQuery.bind(this)}>
-                                    <span className='glyphicon glyphicon-search'></span>
-                                </button>
-                            </span>
-                        </div>
-                    </form>
                 </div>
-                <NewSuggestion ref='newSuggestionBtn' auth={this.props.auth}/>
-                <Login ref='loginBtn' auth={this.props.auth} />
+                <Modal close={() => dispatch(closeLoginModal())} showModal={showLogin} title='Test Modal'>
+                    <Login auth={auth} />
+                </Modal>
             </nav>
         );
     }
 }
 
 Navbar.propTypes = {
-    auth: T.instanceOf(AuthService)
+    dispatch: PropTypes.func.isRequired,
+    showLogin: PropTypes.bool.isRequired,
+    isAuthenticated: PropTypes.bool.isRequired,
+    auth: PropTypes.instanceOf(AuthService)
 };
 
-export default withRouter(Navbar);
+function mapStateToProps(state) {
+    const { showLogin, isAuthenticated } = state.ui;
+    return {
+        showLogin,
+        isAuthenticated
+    };
+}
+
+export default connect(mapStateToProps)(Navbar);
