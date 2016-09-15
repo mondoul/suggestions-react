@@ -1,7 +1,7 @@
 import { OPEN_LOGIN, CLOSE_LOGIN, LOGIN, LOGOUT, OPEN_NEW, CLOSE_NEW } from './uiActions';
 import { ADDING_SUGGESTION, ADDED_SUGGESTION } from './suggestionActions';
 
-export function uiAuth(state = {
+export function uiInteractions(state = {
     showLogin: false,
     showNew: false,
     isAuthenticated: false,

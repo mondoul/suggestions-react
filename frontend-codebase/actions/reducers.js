@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 import { suggestions, suggestionsByFilter } from './suggestionReducers';
-import { uiAuth } from './uiReducers';
+import { uiInteractions } from './uiReducers';
+import { search } from './searchReducers'
 
 export default combineReducers({
     suggestions,
     suggestionsByFilter,
-    ui: uiAuth
+    ui: uiInteractions,
+    search
 });

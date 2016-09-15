@@ -4,11 +4,15 @@ import { connect } from 'react-redux';
 import Modal from './Modal';
 import Login from './Login';
 import NewSuggestion from './NewSuggestion';
+import SearchBar from './SearchBar';
 import { openLoginModal, closeLoginModal, openNewModal, closeNewModal, logout } from '../actions/uiActions';
 import AuthService from '../utils/AuthService';
 
 class Navbar extends Component {
 
+    onSearch(e) {
+        console.log('onSearch', e.currentTarget);
+    }
 
     render() {
 
@@ -44,6 +48,7 @@ class Navbar extends Component {
                         !isAuthenticated &&
                         <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={onLoginClick}>Sign in</button>
                     }
+                    <SearchBar onSearch={this.onSearch} searchQuery={this.query}/>
                 </div>
                 <Modal close={onModalClose} showModal={showLogin} title='Sign-in / Sign-up'>
                     <Login auth={auth} />
@@ -74,7 +79,8 @@ function mapDispatchToProps(dispatch) {
         onLoginClick: () => dispatch(openLoginModal()),
         onModalClose: () => dispatch(closeLoginModal()),
         onNewModalOpen: () => dispatch(openNewModal()),
-        onNewModalClose: () => dispatch(closeNewModal())
+        onNewModalClose: () => dispatch(closeNewModal()),
+        onSearch: (query) => dispatch(searchSuggestions(query))
     }
 }
 

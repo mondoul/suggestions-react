@@ -201,3 +201,8 @@ export function createSuggestion(title, content) {
         })
     }
 }
+
+/*
+ * Search Suggestions
+ */
+
