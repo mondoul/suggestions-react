@@ -15,11 +15,14 @@ class Home extends Component {
     }
 
     render() {
-        const { isFetchingTop, topSuggestions, lastSuggestions, isFetchingLast } = this.props;
+        const { isFetchingTop, topSuggestions, lastSuggestions, isFetchingLast, hasNoResults, query } = this.props;
 
         return (
             <div className='container-fluid'>
                 <div className='row'>
+                    <div className={ hasNoResults ? 'alert alert-warning':'hidden' } role="alert">
+                        No Suggestion found for the terms <strong> { query } </strong>
+                    </div>
                     <div className='col-sm-6'>
                         <h2>Top 10</h2>
                         <div className='list-group animate fade-in'>
@@ -80,11 +83,15 @@ function mapStateToProps(state) {
         items: []
     };
 
+    const { query } = state.search;
+
     return {
         topSuggestions,
         lastSuggestions,
         isFetchingTop,
-        isFetchingLast
+        isFetchingLast,
+        query,
+        hasNoResults: state.search.results.length === 0 && query
     };
 };
 
