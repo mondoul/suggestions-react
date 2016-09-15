@@ -38,6 +38,7 @@ router.get('/top/:count?', function (req, res, next) {
     Suggestion.find()
         .sort('-likes')
         .limit(top)
+        .select('-voters')
         .exec(function(err, data) {
             if (err) return next(err);
 
@@ -54,6 +55,7 @@ router.get('/last/:count?', function (req, res, next) {
     Suggestion.find()
         .sort('-created')
         .limit(last)
+        .select('-voters')
         .exec(function(err, data) {
             if (err) return next(err);
 
@@ -70,6 +72,7 @@ router.get('/find', function (req, res, next) {
                    { 'content': { $regex: re }},
                    { 'author' : { $regex: re }}])
               .sort('-created')
+              .select('-voters')
               .exec(function(err, data) {
                   if (err) return next(err);
 
@@ -85,7 +88,7 @@ router.get('/:suggestion_id', function(req, res, next) {
                                     .select('-_id') // exclude the _id
                                     .exec();
 
-    Suggestion.findById(id).exec(function (err, sugg) {
+    Suggestion.findById(id).select('-voters').exec(function (err, sugg) {
         if (err) return next(err);
 
         if (!sugg) return next(); // 404

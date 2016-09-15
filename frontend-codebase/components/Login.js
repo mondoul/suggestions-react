@@ -44,12 +44,16 @@ class Login extends React.Component {
         return (
             <Form onSubmit={this.handleSubmit.bind(this)} className='form-horizontal login-form'>
                 <FormGroup controlId='email'>
-                    <ControlLabel>E-mail</ControlLabel>
-                    <FormControl type='email' ref='email' placeholder='email@example.com' required/>
+                    <ControlLabel className='col-sm-2'>E-mail</ControlLabel>
+                    <div className='col-sm-10'>
+                        <FormControl type='email' ref='email' placeholder='email@example.com' required/>
+                    </div>
                 </FormGroup>
                 <FormGroup controlId='password'>
-                    <ControlLabel>Password</ControlLabel>
-                    <FormControl type='password' ref='password' placeholder='Password' required/>
+                    <ControlLabel className='col-sm-2'>Password</ControlLabel>
+                    <div className='col-sm-10'>
+                        <FormControl type='password' ref='password' placeholder='Password' required/>
+                    </div>
                 </FormGroup>
                 <ButtonToolbar>
                     <Button type='submit' bsStyle='primary'>Sign In</Button>

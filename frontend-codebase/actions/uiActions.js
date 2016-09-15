@@ -1,5 +1,7 @@
 export const OPEN_LOGIN = 'OPEN_LOGIN';
 export const CLOSE_LOGIN = 'CLOSE_LOGIN';
+export const OPEN_NEW = 'OPEN_NEW';
+export const CLOSE_NEW = 'CLOSE_NEW';
 export const LOGOUT = 'LOGOUT';
 export const LOGIN = 'LOGIN';
 
@@ -11,9 +13,21 @@ export function openLoginModal() {
     }
 }
 
+export function openNewModal() {
+    return {
+        type:OPEN_NEW
+    }
+}
+
 export function closeLoginModal() {
     return {
         type:CLOSE_LOGIN
+    }
+}
+
+export function closeNewModal() {
+    return {
+        type:CLOSE_NEW
     }
 }
 

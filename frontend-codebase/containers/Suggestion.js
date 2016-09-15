@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { retrieveASuggestionIfNeeded } from '../actions/actions';
+import { retrieveASuggestionIfNeeded, likeSuggestion, dislikeSuggestion } from '../actions/suggestionActions';
 import SuggestionDetail from '../components/SuggestionDetail';
 
 class Suggestion extends Component {
@@ -15,11 +15,13 @@ class Suggestion extends Component {
     }
 
     like() {
-        console.log('like !');
+        const { dispatch, id } = this.props;
+        dispatch(likeSuggestion(id));
     }
 
     dislike() {
-        console.log('dislike :(');
+        const { dispatch, id } = this.props;
+        dispatch(dislikeSuggestion(id));
     }
 
     render() {

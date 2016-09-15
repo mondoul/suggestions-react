@@ -1,5 +1,6 @@
 import {
-    REQUEST_SUGGESTIONS, RECEIVE_SUGGESTIONS, RECEIVE_A_SUGGESTION, REQUEST_A_SUGGESTION
+    REQUEST_SUGGESTIONS, RECEIVE_SUGGESTIONS, RECEIVE_A_SUGGESTION, REQUEST_A_SUGGESTION,
+    LIKE_SUGGESTION, DISLIKE_SUGGESTION
 } from './suggestionActions';
 
 export function suggestions(state = {
@@ -29,6 +30,32 @@ export function suggestions(state = {
                 ]
             });
         }
+        case LIKE_SUGGESTION: {
+            return Object.assign({}, state, {
+                items: state.items.map((item, i) => {
+                    if (item._id === action.id){
+                        let likes = item.likes + 1;
+                        return Object.assign({}, item, {
+                            likes
+                        });
+                    }
+                    return item;
+                })
+            });
+        }
+        case DISLIKE_SUGGESTION: {
+            return Object.assign({}, state, {
+                items: state.items.map((item, i) => {
+                    if (item._id === action.id){
+                        let likes = item.likes - 1;
+                        return Object.assign({}, item, {
+                            likes
+                        });
+                    }
+                    return item;
+                })
+            });
+        }
         default:
             return state;
     }
@@ -45,5 +72,6 @@ export function suggestionsByFilter(state = {}, action) {
             return state;
     }
 }
+
 
 

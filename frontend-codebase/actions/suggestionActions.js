@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import config from '../config';
-
+import { auth } from '../utils/initializeAuth';
+import { closeNewModal } from './uiActions';
 /*
  *  Requesting / Receiving a LIST of suggestions, using a filter (top, last) and a size
  */
@@ -25,13 +26,21 @@ function receiveSuggestions(filter, size, json) {
     }
 }
 
-export function fetchSuggestions(filter, size) {
+function fetchSuggestions(filter, size) {
     return dispatch => {
         dispatch(requestSuggestions(filter, size));
         return fetch(`${config.apiUrl}/suggestions/${filter}/${size}`)
             .then(response => response.json())
             .then(json => dispatch(receiveSuggestions(filter, size, json)));
     }
+}
+
+export function fetchMostRecentSuggestions() {
+    return dispatch => dispatch(fetchSuggestions('last', 10));
+}
+
+export function fetchTopSuggestions() {
+    return dispatch => dispatch(fetchSuggestions('top', 10));
 }
 
 /*
@@ -82,5 +91,113 @@ export function retrieveASuggestionIfNeeded(id) {
             return Promise.resolve();
         }
 
+    }
+}
+
+/*
+ * Like / Dislike a suggestion
+ */
+
+export const LIKE_SUGGESTION = 'LIKE_SUGGESTION';
+export const DISLIKE_SUGGESTION = 'DISLIKE_SUGGESTION';
+
+function votedLikeSuggestion(id) {
+    console.log('like suggestion');
+    return {
+        type: LIKE_SUGGESTION,
+        id
+    }
+}
+
+function votedDislikeSuggestion(id) {
+    return {
+        type: DISLIKE_SUGGESTION,
+        id
+    }
+}
+
+function voteSuggestion(id, action) {
+    return dispatch => {
+        return fetch(`${config.apiUrl}/suggestions/${id}/${action}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + auth.getToken()
+            }
+        }).then(response => {
+            if (response.status >= 400) {
+                toastr.error(response.statusText);
+                return Promise.resolve();
+            } else {
+                return response.json();
+            }
+        }).then(json => {
+            console.log('vote OK', JSON.stringify(json));
+            let callback = action === 'like' ? votedLikeSuggestion : votedDislikeSuggestion;
+            if (json.type === 'success') {
+                console.log('success');
+                dispatch(callback(id));
+                toastr.success(json.message);
+            } else {
+                console.log('warning');
+                toastr.warning(json.message);
+            }
+        })
+    }
+}
+
+export function likeSuggestion(id) {
+    return dispatch => dispatch(voteSuggestion(id, 'like'));
+}
+
+export function dislikeSuggestion(id) {
+    return dispatch => dispatch(voteSuggestion(id, 'dislike'));
+}
+
+/*
+ * Add a new Suggestion
+ */
+
+export const ADDING_SUGGESTION = 'ADDING_SUGGESTION';
+export const ADDED_SUGGESTION = 'ADDED_SUGGESTION';
+
+function addingSuggestion(){
+    return {
+        type: ADDING_SUGGESTION
+    }
+}
+
+function addedSuggestion(){
+    return {
+        type: ADDED_SUGGESTION
+    }
+}
+
+export function createSuggestion(title, content) {
+    return dispatch => {
+        dispatch(addingSuggestion());
+
+        return fetch(`${config.apiUrl}/suggestions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + auth.getToken()
+            },
+            body: JSON.stringify({title, content})
+        }).then(response => {
+            if (response.status >= 400) {
+                toastr.error(response.statusText);
+                dispatch(addedSuggestion());
+                return Promise.resolve();
+            } else {
+                return response.json();
+            }
+        })
+        .then(json => {
+            toastr.success(json.message);
+            dispatch(addedSuggestion());
+            dispatch(closeNewModal());
+            dispatch(fetchMostRecentSuggestions());
+            dispatch(fetchTopSuggestions());
+        })
     }
 }

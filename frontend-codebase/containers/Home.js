@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fetchSuggestions } from '../actions/suggestionActions';
+import { fetchMostRecentSuggestions, fetchTopSuggestions } from '../actions/suggestionActions';
 import Suggestions from '../components/Suggestions';
 
 class Home extends Component {
@@ -10,8 +10,8 @@ class Home extends Component {
 
     componentDidMount() {
         const { dispatch } = this.props;
-        dispatch(fetchSuggestions('top', 10));
-        dispatch(fetchSuggestions('last', 10));
+        dispatch(fetchMostRecentSuggestions());
+        dispatch(fetchTopSuggestions());
     }
 
     render() {

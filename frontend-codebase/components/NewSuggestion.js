@@ -1,93 +1,82 @@
-import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import NewSuggestionStore from '../stores/NewSuggestionStore';
-import NewSuggestionActions from '../actions/NewSuggestionActions';
-import HomeActions from '../actions/HomeActions';
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+import { Form, FormGroup, FormControl, ControlLabel, Button, ButtonToolbar } from 'react-bootstrap';
+import { closeNewModal } from '../actions/uiActions';
+import { createSuggestion } from '../actions/suggestionActions';
 
-class NewSuggestion extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = NewSuggestionStore.getState();
-        this.onChange = this.onChange.bind(this);
-    }
+class NewSuggestion extends Component {
 
-    componentDidMount() {
-        NewSuggestionStore.listen(this.onChange);
-    }
-
-    componentWillUnmount() {
-        NewSuggestionStore.unlisten(this.onChange);
-    }
-
-    close() {
-        NewSuggestionActions.closeModal();
-    }
-
-    open() {
-        NewSuggestionActions.openModal();
-    }
-
-    save(event) {
+    saveChanges(event) {
         event.preventDefault();
 
-        let title = this.state.title.trim();
-        let content = this.state.content.trim();
-        let token = this.props.auth.getToken();
+        const { handleSubmit } = this.props;
 
-        if (!title) {
-            NewSuggestionActions.invalidTitle();
-            this.refs.titleTextField.focus();
-        }
+        let title = ReactDOM.findDOMNode(this.refs.title).value.trim();
+        let content = ReactDOM.findDOMNode(this.refs.suggestionBody).value.trim();
 
-        if (!content) {
-            NewSuggestionActions.invalidContent();
-            this.refs.contentTextarea.focus();
-        }
-
-        if (title && content) {
-            NewSuggestionActions.addSuggestion(title, content, token);
-            HomeActions.getLastSuggestions();
-        }
-
-    }
-
-    onChange(state) {
-        this.setState(state);
+        handleSubmit(title, content);
     }
 
     render() {
+
+        const { closeModal, addingSuggestionPending } = this.props;
+
         return (
-            <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>New Suggestion</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <form className='form-horizontal'>
-                        <div className={'form-group ' + this.state.titleValidationState}>
-                            <label form='title' className='col-sm-2 control-label'>Title</label>
-                            <div className='col-sm-8'>
-                                <input type='text' id='title' placeholder='Suggestion Title' ref='titleTextField'
-                                       value={this.state.title} className='form-control' onChange={NewSuggestionActions.updateTitle} autoFocus/>
-                                <span className='help-block'>{this.state.helpBlockTitle}</span>
-                            </div>
-                        </div>
-                        <div className={'form-group ' + this.state.contentValidationState}>
-                            <label form='suggestion' className='col-sm-2 control-label'>Suggestion</label>
-                            <div className='col-sm-8'>
-                                <textarea id='suggestion' rows='5' placeholder='Type your suggestion here...' ref='contentTextarea'
-                                          value={this.state.content} className='form-control' onChange={NewSuggestionActions.updateContent}/>
-                                <span className='help-block'>{this.state.helpBlockContent}</span>
-                            </div>
-                        </div>
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.close.bind(this)}>Cancel</Button>
-                    <Button onClick={this.save.bind(this)} bsStyle="primary">Save changes</Button>
-                </Modal.Footer>
-            </Modal>
+            <Form onSubmit={this.saveChanges.bind(this)} className='form-horizontal new-form'>
+                <FormGroup controlId='title'>
+                    <ControlLabel className='col-sm-2'>Title</ControlLabel>
+                    <div className='col-sm-8'>
+                        <FormControl type='text' ref='title' placeholder='Suggestion Title' required/>
+                    </div>
+                </FormGroup>
+                <FormGroup controlId='suggestionBody'>
+                    <ControlLabel className='col-sm-2'>Suggestion</ControlLabel>
+                    <div className='col-sm-8'>
+                        <FormControl componentClass='textarea' rows='5' ref='suggestionBody' placeholder='Type your suggestion here...' required/>
+                    </div>
+                </FormGroup>
+                <ButtonToolbar>
+                    {
+                        addingSuggestionPending &&
+                        <Button bsStyle='primary' disabled>Saving...</Button>
+                    }
+                    {
+                        !addingSuggestionPending &&
+                        <Button type='submit' bsStyle='primary' >Save Changes</Button>
+                    }
+                    <Button onClick={closeModal}>Cancel</Button>
+                </ButtonToolbar>
+            </Form>
+
+
         );
     }
 }
 
-export default NewSuggestion;
+NewSuggestion.propTypes = {
+    addingSuggestionPending: PropTypes.bool.isRequired,
+    closeModal: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired
+};
+
+function mapStateToProps(state) {
+    const { addingSuggestionPending } = state.ui;
+    return {
+        addingSuggestionPending
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        handleSubmit: (title, content) => {
+            if (title && content) {
+                dispatch(createSuggestion(title, content))
+            }
+        },
+        closeModal: () => dispatch(closeNewModal())
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewSuggestion);

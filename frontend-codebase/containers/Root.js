@@ -23,6 +23,10 @@ function parseAuthHash(store) {
               store.dispatch(hasLoggedIn());
           }
           replace({ pathname: returnUrl });
+      } else {
+          if (auth.loggedIn()){
+              store.dispatch(hasLoggedIn());
+          }
       }
   };
 };

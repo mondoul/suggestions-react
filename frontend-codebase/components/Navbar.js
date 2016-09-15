@@ -3,7 +3,8 @@ import {Link, withRouter} from 'react-router';
 import { connect } from 'react-redux';
 import Modal from './Modal';
 import Login from './Login';
-import { openLoginModal, closeLoginModal, logout } from '../actions/uiActions';
+import NewSuggestion from './NewSuggestion';
+import { openLoginModal, closeLoginModal, openNewModal, closeNewModal, logout } from '../actions/uiActions';
 import AuthService from '../utils/AuthService';
 
 class Navbar extends Component {
@@ -11,7 +12,7 @@ class Navbar extends Component {
 
     render() {
 
-        const { dispatch, showLogin, auth, isAuthenticated } = this.props;
+        const { onLogoutClick, onLoginClick, onModalClose, onNewModalOpen, onNewModalClose, showLogin, showNew, auth, isAuthenticated } = this.props;
 
         return (
             <nav className='navbar navbar-default navbar-static-top'>
@@ -29,15 +30,26 @@ class Navbar extends Component {
                 <div id='navbar' className='navbar-collapse collapse'>
                     {
                         isAuthenticated &&
-                        <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={() => dispatch(logout())}>Logout</button>
+                        <button type="button" className="btn btn-success navbar-btn" onClick={onNewModalOpen}>New</button>
                     }
                     {
                         !isAuthenticated &&
-                        <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={() => dispatch(openLoginModal())}>Login</button>
+                        <button type="button" className="btn btn-success navbar-btn disabled" data-toggle='tooltip' data-placement='bottom' title='Login or Sign up to post a new suggestion'>New</button>
+                    }
+                    {
+                        isAuthenticated &&
+                        <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={onLogoutClick}>Sign out</button>
+                    }
+                    {
+                        !isAuthenticated &&
+                        <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={onLoginClick}>Sign in</button>
                     }
                 </div>
-                <Modal close={() => dispatch(closeLoginModal())} showModal={showLogin} title='Test Modal'>
+                <Modal close={onModalClose} showModal={showLogin} title='Sign-in / Sign-up'>
                     <Login auth={auth} />
+                </Modal>
+                <Modal title='Create a new Suggestion' showModal={showNew} close={onNewModalClose}>
+                    <NewSuggestion/>
                 </Modal>
             </nav>
         );
@@ -45,18 +57,34 @@ class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    onLoginClick: PropTypes.func.isRequired,
+    onLogoutClick: PropTypes.func.isRequired,
+    onModalClose: PropTypes.func.isRequired,
+    onNewModalOpen: PropTypes.func.isRequired,
+    onNewModalClose: PropTypes.func.isRequired,
     showLogin: PropTypes.bool.isRequired,
+    showNew: PropTypes.bool.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     auth: PropTypes.instanceOf(AuthService)
 };
 
+function mapDispatchToProps(dispatch) {
+    return {
+        onLogoutClick: () => dispatch(logout()),
+        onLoginClick: () => dispatch(openLoginModal()),
+        onModalClose: () => dispatch(closeLoginModal()),
+        onNewModalOpen: () => dispatch(openNewModal()),
+        onNewModalClose: () => dispatch(closeNewModal())
+    }
+}
+
 function mapStateToProps(state) {
-    const { showLogin, isAuthenticated } = state.ui;
+    const { showLogin, showNew, isAuthenticated } = state.ui;
     return {
         showLogin,
+        showNew,
         isAuthenticated
     };
 }
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
