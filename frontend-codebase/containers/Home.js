@@ -91,7 +91,7 @@ function mapStateToProps(state) {
         isFetchingTop,
         isFetchingLast,
         query,
-        hasNoResults: state.search.results.length === 0 && query
+        hasNoResults: state.search.results.length === 0 && query && query.length > 2
     };
 }
 

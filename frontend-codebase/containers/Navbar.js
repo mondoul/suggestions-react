@@ -17,7 +17,7 @@ class Navbar extends Component {
 
         const { onLogoutClick, onLoginClick, onModalClose, onNewModalOpen, onNewModalClose,
                 showLogin, showNew, auth, isAuthenticated, query, onSearch,
-                addingSuggestionPending, handleSubmit} = this.props;
+                addingSuggestionPending, handleSubmit, isFetching} = this.props;
 
         return (
             <nav className='navbar navbar-default navbar-static-top'>
@@ -49,7 +49,7 @@ class Navbar extends Component {
                         !isAuthenticated &&
                         <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={onLoginClick}>Sign in</button>
                     }
-                    <SearchBar query={query} onSearch={onSearch}/>
+                    <SearchBar query={query} onSearch={onSearch} isFetching={isFetching}/>
                 </div>
                 <Modal close={onModalClose} showModal={showLogin} title='Sign-in / Sign-up'>
                     <Login auth={auth} />
@@ -100,13 +100,14 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
     const { showLogin, showNew, isAuthenticated, addingSuggestionPending } = state.ui;
-    const { query } = state.search;
+    const { query, isFetching } = state.search;
     return {
         showLogin,
         showNew,
         isAuthenticated,
         addingSuggestionPending,
-        query
+        query,
+        isFetching
     };
 }
 
