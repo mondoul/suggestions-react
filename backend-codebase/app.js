@@ -11,6 +11,8 @@ var models = require('./models');
 
 var config = require('./config');
 var suggestions = require('./routes/suggestions');
+var comments = require('./routes/comments');
+
 
 var app = express();
 
@@ -46,6 +48,7 @@ mongoose.connection.on('error', function() {
 
 // Api routes
 app.use('/api/suggestions', suggestions);
+app.use('/api/comments', comments);
 
 // Render the index page for all routes
 app.get('*', function(req, res) {

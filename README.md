@@ -1,6 +1,6 @@
 # Suggestion React
 
-Suggestion application using React Js + Flux + NodeJs + MongoDb 
+Suggestion application using React + Redux + NodeJs + MongoDb 
 
 ## Pre-requisites
 

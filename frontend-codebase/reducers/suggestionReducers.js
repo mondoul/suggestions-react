@@ -1,6 +1,6 @@
 import {
     REQUEST_SUGGESTIONS, RECEIVE_SUGGESTIONS, RECEIVE_A_SUGGESTION, REQUEST_A_SUGGESTION,
-    LIKE_SUGGESTION, DISLIKE_SUGGESTION
+    LIKE_SUGGESTION, DISLIKE_SUGGESTION, COMMENT_ADDED
 } from '../actions/actionsConst';
 
 export function suggestions(state = {
@@ -56,6 +56,11 @@ export function suggestions(state = {
                 })
             });
         }
+        //case COMMENT_ADDED: {
+        //     return Object.assign({}, state, {
+        //
+        //     })
+        // }
         default:
             return state;
     }

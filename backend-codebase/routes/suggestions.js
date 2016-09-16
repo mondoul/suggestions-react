@@ -86,6 +86,7 @@ router.get('/:suggestion_id', function(req, res, next) {
     var commentsPromise = Suggestion.findComments(id)
                                     .sort('created')
                                     .select('-_id') // exclude the _id
+                                    .limit(10) // 10 comments per page
                                     .exec();
 
     Suggestion.findById(id).select('-voters').exec(function (err, sugg) {

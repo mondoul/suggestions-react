@@ -2,7 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { retrieveASuggestionIfNeeded, likeSuggestion, dislikeSuggestion } from '../actions/suggestionActions';
+import { postComment } from '../actions/commentActions';
 import SuggestionDetail from '../components/SuggestionDetail';
+import CommentForm from '../components/CommentForm';
+import CommentList from '../components/CommentList';
 
 class Suggestion extends Component {
     constructor(props) {
@@ -25,7 +28,7 @@ class Suggestion extends Component {
     }
 
     render() {
-        const { suggestion, isFetching } = this.props;
+        const { suggestion, isFetching, isAuthenticated, id, handleSubmit } = this.props;
 
         return(
             <div className='suggestion-component-container'>
@@ -34,8 +37,14 @@ class Suggestion extends Component {
                         <span>Loading...</span>
                 }
                 {
-                    !isFetching && suggestion &&
-                        <SuggestionDetail suggestion={suggestion} like={() => this.like() } dislike={() => this.dislike()} />
+                    !isFetching && suggestion ? (
+                        <div>
+                            <SuggestionDetail suggestion={suggestion} like={() => this.like() } dislike={() => this.dislike()} authenticated={isAuthenticated} />
+                            <hr/>
+                            <CommentForm handleSubmit={handleSubmit} suggestionId={id} isAdding={false}/>
+                        </div>
+                    ) : null
+
                 }
             </div>
         );
@@ -52,11 +61,20 @@ Suggestion.propTypes = {
 function mapStateToProps(state, ownProps) {
     const id = ownProps.params.suggestionId;
     const suggestion = state.suggestions.items.find(el => { return el._id === id; }) || {};
+    const { isAuthenticated } = state.ui;
     return {
         id,
         suggestion,
-        isFetching: !suggestion
+        isFetching: !suggestion,
+        isAuthenticated
     }
 }
 
-export default connect(mapStateToProps)(withRouter(Suggestion));
+function mapDispatchToProps(dispatch) {
+    return {
+        handleSubmit: (id, content) => dispatch(postComment(id, content)),
+        dispatch
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Suggestion));

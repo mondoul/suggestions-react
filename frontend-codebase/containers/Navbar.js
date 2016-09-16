@@ -13,6 +13,18 @@ import AuthService from '../utils/AuthService';
 
 class Navbar extends Component {
 
+    componentDidMount() {
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    }
+
+    componentDidUpdate() {
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    }
+
     render() {
 
         const { onLogoutClick, onLoginClick, onModalClose, onNewModalOpen, onNewModalClose,

@@ -24,3 +24,6 @@ export const OPEN_NEW = 'OPEN_NEW';
 export const CLOSE_NEW = 'CLOSE_NEW';
 export const LOGOUT = 'LOGOUT';
 export const LOGIN = 'LOGIN';
+
+export const ADDING_COMMENT = 'ADDING_COMMENT';
+export const COMMENT_ADDED = 'COMMENT_ADDED';

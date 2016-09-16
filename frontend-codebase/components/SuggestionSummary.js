@@ -1,5 +1,4 @@
 import React, {PropTypes, Component} from 'react';
-import { push } from 'react-router-redux';
 import timeSince from '../utils/timeago';
 
 class SuggestionSummary extends Component {
