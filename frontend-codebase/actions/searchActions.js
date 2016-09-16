@@ -1,35 +1,31 @@
 import fetch from 'isomorphic-fetch';
 import { push } from 'react-router-redux';
 import config from '../config';
-
-export const QUERY_UPDATED = 'QUERY_UPDATED';
-export const SEARCHING = 'SEARCHING';
-export const SEARCH_FINISHED = 'SEARCH_FINISHED';
-export const SEARCH_NO_RESULT = 'SEARCH_NO_RESULT';
+import * as actions from './actionsConst';
 
 export function queryUpdated(query) {
     return {
-        type: QUERY_UPDATED,
+        type: actions.QUERY_UPDATED,
         query
     }
 }
 
 function searchInProgress() {
     return {
-        type: SEARCHING
+        type: actions.SEARCHING
     }
 }
 
 function searchTerminated(results) {
     return {
-        type: SEARCH_FINISHED,
+        type: actions.SEARCH_FINISHED,
         results
     }
 }
 
 function searchTerminatedWithoutResults() {
     return {
-        type: SEARCH_NO_RESULT
+        type: actions.SEARCH_NO_RESULT
     }
 }
 

@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var mocha = require('gulp-mocha');
 var gulpif = require('gulp-if');
 var autoprefixer = require('gulp-autoprefixer');
 var cssmin = require('gulp-cssmin');
@@ -13,7 +14,9 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
+var babel = require('gulp-babel');
 var path = require('./path');
+require('babel-core/register');
 
 var production = process.env.NODE_ENV === 'production';
 
@@ -111,6 +114,19 @@ gulp.task('styles', function() {
         .pipe(autoprefixer())
         .pipe(gulpif(production, cssmin()))
         .pipe(gulp.dest(path.dist + 'css'));
+});
+
+/*
+ |--------------------------------------------------------------------------
+ | Run Tests
+ |--------------------------------------------------------------------------
+ */
+
+gulp.task('test', function () {
+   return gulp.src(['tests/*.js'], {read: false})
+       .pipe(babel())
+       .pipe(mocha({reporter : 'spec'}))
+       .on('error', gutil.log);
 });
 
 gulp.task('watch', function() {

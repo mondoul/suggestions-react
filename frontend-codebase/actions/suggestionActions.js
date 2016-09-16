@@ -3,28 +3,24 @@ import config from '../config';
 import { auth } from '../utils/initializeAuth';
 import { closeNewModal } from './uiActions';
 import { push } from 'react-router-redux';
+import * as actions from './actionsConst';
 
 /*
  * Navigate to a given Suggestion
  */
 
-export const NAVIGATE_TO_SUGGESTION = 'NAVIGATE_TO_SUGGESTION';
 
 export function navigateTo(id) {
     return dispatch => dispatch(push('/suggestion/' + id));
 }
 
-
 /*
  *  Requesting / Receiving a LIST of suggestions, using a filter (top, last) and a size
  */
 
-export const REQUEST_SUGGESTIONS = 'REQUEST_SUGGESTIONS';
-export const RECEIVE_SUGGESTIONS = 'RECEIVE_SUGGESTIONS';
-
 function requestSuggestions(filter, size) {
     return {
-        type: REQUEST_SUGGESTIONS,
+        type: actions.REQUEST_SUGGESTIONS,
         filter,
         size
     }
@@ -32,7 +28,7 @@ function requestSuggestions(filter, size) {
 
 function receiveSuggestions(filter, size, json) {
     return {
-        type: RECEIVE_SUGGESTIONS,
+        type: actions.RECEIVE_SUGGESTIONS,
         suggestions: json,
         filter,
         size
@@ -60,19 +56,16 @@ export function fetchTopSuggestions() {
  *  Requesting / Receiving a SINGLE suggestion by Id (if necessary)
  */
 
-export const REQUEST_A_SUGGESTION = 'REQUEST_A_SUGGESTION';
-export const RECEIVE_A_SUGGESTION = 'RECEIVE_A_SUGGESTION';
-
 function requestASuggestion(id){
     return {
-        type: REQUEST_A_SUGGESTION,
+        type: actions.REQUEST_A_SUGGESTION,
         id
     }
 }
 
 function receiveASuggestion(id, json) {
     return {
-        type: RECEIVE_A_SUGGESTION,
+        type: actions.RECEIVE_A_SUGGESTION,
         result: json,
         id
     }
@@ -111,20 +104,17 @@ export function retrieveASuggestionIfNeeded(id) {
  * Like / Dislike a suggestion
  */
 
-export const LIKE_SUGGESTION = 'LIKE_SUGGESTION';
-export const DISLIKE_SUGGESTION = 'DISLIKE_SUGGESTION';
-
 function votedLikeSuggestion(id) {
     console.log('like suggestion');
     return {
-        type: LIKE_SUGGESTION,
+        type: actions.LIKE_SUGGESTION,
         id
     }
 }
 
 function votedDislikeSuggestion(id) {
     return {
-        type: DISLIKE_SUGGESTION,
+        type: actions.DISLIKE_SUGGESTION,
         id
     }
 }
@@ -167,18 +157,15 @@ export function dislikeSuggestion(id) {
  * Add a new Suggestion
  */
 
-export const ADDING_SUGGESTION = 'ADDING_SUGGESTION';
-export const ADDED_SUGGESTION = 'ADDED_SUGGESTION';
-
 function addingSuggestion(){
     return {
-        type: ADDING_SUGGESTION
+        type: actions.ADDING_SUGGESTION
     }
 }
 
 function addedSuggestion(){
     return {
-        type: ADDED_SUGGESTION
+        type: actions.ADDED_SUGGESTION
     }
 }
 

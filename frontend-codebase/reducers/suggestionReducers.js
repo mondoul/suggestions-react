@@ -1,7 +1,7 @@
 import {
     REQUEST_SUGGESTIONS, RECEIVE_SUGGESTIONS, RECEIVE_A_SUGGESTION, REQUEST_A_SUGGESTION,
     LIKE_SUGGESTION, DISLIKE_SUGGESTION
-} from './suggestionActions';
+} from '../actions/actionsConst';
 
 export function suggestions(state = {
     isFetching: false,

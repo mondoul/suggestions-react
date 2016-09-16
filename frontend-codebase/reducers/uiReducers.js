@@ -1,5 +1,5 @@
-import { OPEN_LOGIN, CLOSE_LOGIN, LOGIN, LOGOUT, OPEN_NEW, CLOSE_NEW } from './uiActions';
-import { ADDING_SUGGESTION, ADDED_SUGGESTION } from './suggestionActions';
+import { OPEN_LOGIN, CLOSE_LOGIN, LOGIN, LOGOUT, OPEN_NEW, CLOSE_NEW,
+        ADDING_SUGGESTION, ADDED_SUGGESTION } from '../actions/actionsConst';
 
 export function uiInteractions(state = {
     showLogin: false,

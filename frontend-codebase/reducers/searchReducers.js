@@ -1,4 +1,4 @@
-import { QUERY_UPDATED, SEARCH_FINISHED, SEARCH_NO_RESULT, SEARCHING } from './searchActions';
+import { QUERY_UPDATED, SEARCH_FINISHED, SEARCH_NO_RESULT, SEARCHING } from '../actions/actionsConst';
 
 export function search(state = {
     query: '',

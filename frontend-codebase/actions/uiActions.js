@@ -1,45 +1,39 @@
-export const OPEN_LOGIN = 'OPEN_LOGIN';
-export const CLOSE_LOGIN = 'CLOSE_LOGIN';
-export const OPEN_NEW = 'OPEN_NEW';
-export const CLOSE_NEW = 'CLOSE_NEW';
-export const LOGOUT = 'LOGOUT';
-export const LOGIN = 'LOGIN';
-
 import { auth } from '../utils/initializeAuth';
+import * as actions from './actionsConst';
 
 export function openLoginModal() {
     return {
-        type:OPEN_LOGIN
+        type:actions.OPEN_LOGIN
     }
 }
 
 export function openNewModal() {
     return {
-        type:OPEN_NEW
+        type:actions.OPEN_NEW
     }
 }
 
 export function closeLoginModal() {
     return {
-        type:CLOSE_LOGIN
+        type:actions.CLOSE_LOGIN
     }
 }
 
 export function closeNewModal() {
     return {
-        type:CLOSE_NEW
+        type:actions.CLOSE_NEW
     }
 }
 
 export function hasLoggedIn() {
     return {
-        type:LOGIN
+        type:actions.LOGIN
     }
 }
 
 function needToLogout() {
     return {
-        type: LOGOUT
+        type: actions.LOGOUT
     }
 }
 
