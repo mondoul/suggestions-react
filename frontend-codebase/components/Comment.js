@@ -6,12 +6,12 @@ class Comment extends Component {
     render() {
         const { comment } = this.props;
         return (
-            <div className='comment-component'>
+            <div className='comment-component list-group-item'>
                 <div className='content'>
                     {comment.content}
                 </div>
                 <div className='details'>
-                    <span>{comment.author}, {timeSince(comment.created)} ago</span>
+                    <span>{comment.author}, {timeSince(comment.date)} ago</span>
                 </div>
             </div>
         )

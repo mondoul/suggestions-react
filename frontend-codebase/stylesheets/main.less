@@ -50,7 +50,12 @@
   }
 
   .btn-toolbar{
-    margin-left: 16.66666667%;
+    @media only screen and (min-width: 768px) {
+      margin-left: 16.66666667%!important;
+    }
+    @media only screen and (max-width: 768px) {
+      margin-left: 0;
+    }
     padding-left: 10px;
   }
 }
@@ -82,6 +87,23 @@
     text-align: right;
     font-size: xx-small;
   }
+  .comments-container{
+    margin-top:15px;
+    .comment-component {
+      .content {
+        display: block;
+        width:100%;
+      }
+
+      .details {
+        text-align: right;
+        font-size: x-small;
+      }
+
+    }
+  }
+
+
 }
 
 .short-suggestion-component {

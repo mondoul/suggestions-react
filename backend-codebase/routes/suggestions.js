@@ -83,18 +83,13 @@ router.get('/find', function (req, res, next) {
 // GET Suggestion
 router.get('/:suggestion_id', function(req, res, next) {
     var id = req.params.suggestion_id;
-    var commentsPromise = Suggestion.findComments(id)
-                                    .sort('created')
-                                    .select('-_id') // exclude the _id
-                                    .limit(10) // 10 comments per page
-                                    .exec();
 
     Suggestion.findById(id).select('-voters').exec(function (err, sugg) {
         if (err) return next(err);
 
         if (!sugg) return next(); // 404
 
-        res.send({suggestion: sugg, comments: commentsPromise});
+        res.send({suggestion: sugg});
     });
 });
 

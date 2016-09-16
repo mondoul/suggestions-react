@@ -15,9 +15,11 @@ function addingComment() {
     }
 }
 
-function addedComment() {
+function addedComment(id, comment) {
     return {
-        type: actions.COMMENT_ADDED
+        type: actions.COMMENT_ADDED,
+        comment,
+        id
     }
 }
 
@@ -40,10 +42,55 @@ export function postComment(id, content) {
             } else {
                 return response.json();
             }
-        })
-            .then(json => {
+        }).then(json => {
                 toastr.success(json.message);
-                dispatch(addedComment());
+                dispatch(addedComment(id, json.comment));
             })
+    }
+}
+
+/*
+ * Requesting Comments
+ */
+
+function requestComments() {
+    return {
+        type: actions.REQUEST_COMMENTS
+    }
+}
+
+function receivedComments(id, json) {
+    return {
+        type: actions.RECEIVED_COMMENTS,
+        comments: json.comments,
+        id
+    }
+}
+
+function fetchComments(id) {
+    return dispatch => {
+        dispatch(requestComments());
+        return fetch(`${config.apiUrl}/comments/${id}`)
+            .then(response => response.json())
+            .then(json => {
+                dispatch(receivedComments(id, json))
+            });
+    }
+}
+
+function shouldRequestComments(state, id) {
+    if (!state.comments)
+        return true;
+    const comments = state.comments[id];
+    return !comments || comments.length === 0;
+}
+
+export function retrieveCommentsIfNeeded(id) {
+    return (dispatch, getState) => {
+        if (shouldRequestComments(getState(), id)) {
+            return dispatch(fetchComments(id));
+        } else {
+            return Promise.resolve();
+        }
     }
 }

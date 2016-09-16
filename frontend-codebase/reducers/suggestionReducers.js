@@ -56,11 +56,6 @@ export function suggestions(state = {
                 })
             });
         }
-        //case COMMENT_ADDED: {
-        //     return Object.assign({}, state, {
-        //
-        //     })
-        // }
         default:
             return state;
     }

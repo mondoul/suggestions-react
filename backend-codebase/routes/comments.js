@@ -25,7 +25,7 @@ router.post('/:suggestion_id', authCheck, function (req, res, next) {
     }, function (err, comment) {
         if (err) return next(err);
         console.log('comment created', comment);
-        res.send({ message: 'Comment saved'});
+        res.send({ message: 'Comment saved', comment: comment});
     });
 });
 
@@ -35,9 +35,9 @@ router.get('/:suggestion_id/:page?', function( req, res, next) {
     page = isNaN(page) ? 1 : parseInt(page);
 
     var comments = Suggestion.findComments(id)
-             .sort('created')
+             .sort('-created')
              .select('-_id')
-             .skip(page - 1 * pageSize)
+             .skip((page - 1) * pageSize)
              .limit(pageSize)
              .exec(function (err, comments) {
         if (err) return next(err);

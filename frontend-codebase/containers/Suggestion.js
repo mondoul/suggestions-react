@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { retrieveASuggestionIfNeeded, likeSuggestion, dislikeSuggestion } from '../actions/suggestionActions';
-import { postComment } from '../actions/commentActions';
+import { retrieveCommentsIfNeeded, postComment } from '../actions/commentActions';
 import SuggestionDetail from '../components/SuggestionDetail';
 import CommentForm from '../components/CommentForm';
 import CommentList from '../components/CommentList';
@@ -15,6 +15,7 @@ class Suggestion extends Component {
     componentDidMount() {
         const { dispatch, id } = this.props;
         dispatch(retrieveASuggestionIfNeeded(id));
+        dispatch(retrieveCommentsIfNeeded(id));
     }
 
     like() {
@@ -28,7 +29,8 @@ class Suggestion extends Component {
     }
 
     render() {
-        const { suggestion, isFetching, isAuthenticated, id, handleSubmit } = this.props;
+        const { suggestion, isFetching, isAuthenticated, id,
+            handleSubmit, comments, isFetchingComments, isSaving } = this.props;
 
         return(
             <div className='suggestion-component-container'>
@@ -41,7 +43,8 @@ class Suggestion extends Component {
                         <div>
                             <SuggestionDetail suggestion={suggestion} like={() => this.like() } dislike={() => this.dislike()} authenticated={isAuthenticated} />
                             <hr/>
-                            <CommentForm handleSubmit={handleSubmit} suggestionId={id} isAdding={false}/>
+                            <CommentForm handleSubmit={handleSubmit} suggestionId={id} isAdding={isSaving}/>
+                            <CommentList comments={comments} isFetching={isFetchingComments} />
                         </div>
                     ) : null
 
@@ -61,12 +64,19 @@ Suggestion.propTypes = {
 function mapStateToProps(state, ownProps) {
     const id = ownProps.params.suggestionId;
     const suggestion = state.suggestions.items.find(el => { return el._id === id; }) || {};
+    const comments = state.comments[id] ?  state.comments[id] : [];
+    console.log('comments', comments);
+    const { isFetching:isFetchingComments, isSaving } = state.comments;
     const { isAuthenticated } = state.ui;
+
     return {
         id,
         suggestion,
         isFetching: !suggestion,
-        isAuthenticated
+        isAuthenticated,
+        comments,
+        isFetchingComments,
+        isSaving
     }
 }
 
