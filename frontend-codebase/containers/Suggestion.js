@@ -55,7 +55,7 @@ function mapStateToProps(state, ownProps) {
     return {
         id,
         suggestion,
-        isFetching: !!!suggestion
+        isFetching: !suggestion
     }
 }
 

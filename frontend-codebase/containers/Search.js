@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import SuggestionSummary from './SuggestionSummary';
+import { navigateTo } from '../actions/suggestionActions';
+import Suggestions from '../components/Suggestions';
 
 class Search extends Component {
 
     render() {
 
-        const { isFetching, results } = this.props;
+        const { isFetching, results, navigateTo } = this.props;
 
         return (
             <div className='container-fluid'>
@@ -19,11 +20,9 @@ class Search extends Component {
                                     <span>In progress ...</span>
                             }
                             {
-                                !isFetching && results.map((result, i) => {
-                                return (
-                                    <SuggestionSummary key={i} suggestion={result} />
-                                )}
-                            )}
+                                !isFetching &&
+                                    <Suggestions suggestions={results} navigateTo={navigateTo} />
+                            }
                         </div>
                     </div>
                 </div>
@@ -34,7 +33,8 @@ class Search extends Component {
 
 Search.propTypes = {
     isFetching: PropTypes.bool.isRequired,
-    results: PropTypes.array.isRequired
+    results: PropTypes.array.isRequired,
+    navigateTo: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -45,4 +45,10 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(Search);
+function mapDispatchToProps(dispatch) {
+    return {
+        navigateTo: (id) => dispatch(navigateTo(id))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

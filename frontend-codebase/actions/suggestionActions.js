@@ -2,6 +2,19 @@ import fetch from 'isomorphic-fetch';
 import config from '../config';
 import { auth } from '../utils/initializeAuth';
 import { closeNewModal } from './uiActions';
+import { push } from 'react-router-redux';
+
+/*
+ * Navigate to a given Suggestion
+ */
+
+export const NAVIGATE_TO_SUGGESTION = 'NAVIGATE_TO_SUGGESTION';
+
+export function navigateTo(id) {
+    return dispatch => dispatch(push('/suggestion/' + id));
+}
+
+
 /*
  *  Requesting / Receiving a LIST of suggestions, using a filter (top, last) and a size
  */
@@ -80,7 +93,7 @@ function shouldRequestASuggestion(state, id) {
     const suggestion = state.suggestions.items.find(el => {
         return el._id === id;
     });
-    return !!!suggestion; // !! turns suggestion into bool, if found, it's 'true', but if found, we don't want to fetch, so we negate
+    return !suggestion;
 }
 
 export function retrieveASuggestionIfNeeded(id) {
@@ -131,14 +144,11 @@ function voteSuggestion(id, action) {
                 return response.json();
             }
         }).then(json => {
-            console.log('vote OK', JSON.stringify(json));
             let callback = action === 'like' ? votedLikeSuggestion : votedDislikeSuggestion;
             if (json.type === 'success') {
-                console.log('success');
                 dispatch(callback(id));
                 toastr.success(json.message);
             } else {
-                console.log('warning');
                 toastr.warning(json.message);
             }
         })
@@ -201,8 +211,3 @@ export function createSuggestion(title, content) {
         })
     }
 }
-
-/*
- * Search Suggestions
- */
-

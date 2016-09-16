@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fetchMostRecentSuggestions, fetchTopSuggestions } from '../actions/suggestionActions';
+import { fetchMostRecentSuggestions, fetchTopSuggestions, navigateTo } from '../actions/suggestionActions';
 import Suggestions from '../components/Suggestions';
 
 class Home extends Component {
@@ -9,13 +9,12 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        const { dispatch } = this.props;
-        dispatch(fetchMostRecentSuggestions());
-        dispatch(fetchTopSuggestions());
+        const { fetchSuggestions } = this.props;
+        fetchSuggestions();
     }
 
     render() {
-        const { isFetchingTop, topSuggestions, lastSuggestions, isFetchingLast, hasNoResults, query } = this.props;
+        const { navigateTo, isFetchingTop, topSuggestions, lastSuggestions, isFetchingLast, hasNoResults, query } = this.props;
 
         return (
             <div className='container-fluid'>
@@ -33,7 +32,7 @@ class Home extends Component {
                                 <span>Empty.</span>
                             }
                             {topSuggestions.length > 0 &&
-                                <Suggestions suggestions={topSuggestions}/>
+                                <Suggestions suggestions={topSuggestions} navigateTo={navigateTo}/>
                             }
                         </div>
                     </div>
@@ -47,7 +46,7 @@ class Home extends Component {
                             <span>Empty.</span>
                             }
                             {lastSuggestions.length > 0 &&
-                            <Suggestions suggestions={lastSuggestions}/>
+                            <Suggestions suggestions={lastSuggestions} navigateTo={navigateTo}/>
                             }
                         </div>
                     </div>
@@ -62,7 +61,8 @@ Home.propTypes = {
     lastSuggestions: PropTypes.array.isRequired,
     isFetchingTop: PropTypes.bool.isRequired,
     isFetchingLast: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired
+    fetchSuggestions: PropTypes.func.isRequired,
+    navigateTo: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -93,6 +93,17 @@ function mapStateToProps(state) {
         query,
         hasNoResults: state.search.results.length === 0 && query
     };
-};
+}
 
-export default connect(mapStateToProps)(Home);
+function mapDispatchToProps(dispatch) {
+    return {
+        navigateTo: (id) => dispatch(navigateTo(id)),
+        fetchSuggestions: () => {
+            dispatch(fetchMostRecentSuggestions());
+            dispatch(fetchTopSuggestions());
+        }
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

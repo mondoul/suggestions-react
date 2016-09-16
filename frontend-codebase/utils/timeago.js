@@ -1,4 +1,4 @@
-var timeSince = function(date) {
+const timeSince = function(date) {
     if (typeof date !== 'object') {
         date = new Date(date);
     }

@@ -7,6 +7,8 @@ export default class Suggestions extends Component {
         let maxLength = 100;
         let title = suggestion.title;
 
+        const { navigateTo } = this.props;
+
         if (title.length > maxLength) {
             title = title.substring(0, maxLength) + '...';
         }
@@ -14,7 +16,7 @@ export default class Suggestions extends Component {
         suggestion.title = title;
 
         return (
-            <SuggestionSummary key={i} suggestion={suggestion} />
+            <SuggestionSummary key={i} suggestion={suggestion} navigateTo={navigateTo} />
         );
     }
 
@@ -28,5 +30,6 @@ export default class Suggestions extends Component {
 }
 
 Suggestions.propTypes = {
-    suggestions: PropTypes.array.isRequired
+    suggestions: PropTypes.array.isRequired,
+    navigateTo: PropTypes.func.isRequired
 };

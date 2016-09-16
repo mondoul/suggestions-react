@@ -1,9 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
 import { Form, FormGroup, FormControl, ControlLabel, Button, ButtonToolbar } from 'react-bootstrap';
-import { closeNewModal } from '../actions/uiActions';
-import { createSuggestion } from '../actions/suggestionActions';
 
 class NewSuggestion extends Component {
 
@@ -43,7 +40,7 @@ class NewSuggestion extends Component {
                     }
                     {
                         !addingSuggestionPending &&
-                        <Button type='submit' bsStyle='primary' >Save Changes</Button>
+                        <Button type='submit' bsStyle='primary'>Save Changes</Button>
                     }
                     <Button onClick={closeModal}>Cancel</Button>
                 </ButtonToolbar>
@@ -60,23 +57,4 @@ NewSuggestion.propTypes = {
     handleSubmit: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
-    const { addingSuggestionPending } = state.ui;
-    return {
-        addingSuggestionPending
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return {
-        handleSubmit: (title, content) => {
-            if (title && content) {
-                dispatch(createSuggestion(title, content))
-            }
-        },
-        closeModal: () => dispatch(closeNewModal())
-    }
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(NewSuggestion);
+export default NewSuggestion;

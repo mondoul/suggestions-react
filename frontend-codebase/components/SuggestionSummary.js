@@ -1,18 +1,14 @@
 import React, {PropTypes, Component} from 'react';
-import { withRouter } from 'react-router';
+import { push } from 'react-router-redux';
 import timeSince from '../utils/timeago';
 
 class SuggestionSummary extends Component {
 
-    navigate(id) {
-        this.props.router.push('/suggestion/' + id);
-    }
-
     render() {
-        let suggestion = this.props.suggestion;
+        const { suggestion, navigateTo } = this.props;
 
         return (
-            <div className='short-suggestion-component list-group-item' onClick={this.navigate.bind(this, suggestion._id)}>
+            <div className='short-suggestion-component list-group-item' onClick={navigateTo.bind(this, suggestion._id)}>
                 <div className='votes'>
                     <span className='likes'>{suggestion.likes}</span>
                     <label>Points</label>
@@ -30,4 +26,4 @@ SuggestionSummary.propTypes = {
     suggestion: PropTypes.any.isRequired
 };
 
-export default withRouter(SuggestionSummary);
+export default SuggestionSummary;

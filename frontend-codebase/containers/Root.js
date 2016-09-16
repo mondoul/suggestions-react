@@ -4,7 +4,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import App from './App';
 import Home from './Home';
 import Suggestion from './Suggestion';
-import Search from '../components/Search';
+import Search from './Search';
 import { auth } from '../utils/initializeAuth';
 import { hasLoggedIn } from '../actions/uiActions';
 import { queryUpdated, search } from '../actions/searchActions';

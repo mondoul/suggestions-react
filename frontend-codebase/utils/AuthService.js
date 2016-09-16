@@ -14,7 +14,6 @@ class AuthService {
 
         this.login = this.login.bind(this);
         this.signup = this.signup.bind(this);
-        console.log('new AuthService');
     }
 
     login(params, onError){

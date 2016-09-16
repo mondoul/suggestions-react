@@ -1,22 +1,23 @@
 import React, { Component, PropTypes } from 'react';
-import {Link, withRouter} from 'react-router';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import Modal from './Modal';
-import Login from './Login';
-import NewSuggestion from './NewSuggestion';
-import SearchBar from './SearchBar';
+import { push } from 'react-router-redux';
+import Modal from '../components/Modal';
+import Login from '../components/Login';
+import NewSuggestion from '../components/NewSuggestion';
+import SearchBar from '../components/SearchBar';
 import { openLoginModal, closeLoginModal, openNewModal, closeNewModal, logout } from '../actions/uiActions';
+import { queryUpdated, search } from '../actions/searchActions';
+import { createSuggestion } from '../actions/suggestionActions';
 import AuthService from '../utils/AuthService';
 
 class Navbar extends Component {
 
-    onSearch(e) {
-        console.log('onSearch', e.currentTarget);
-    }
-
     render() {
 
-        const { onLogoutClick, onLoginClick, onModalClose, onNewModalOpen, onNewModalClose, showLogin, showNew, auth, isAuthenticated } = this.props;
+        const { onLogoutClick, onLoginClick, onModalClose, onNewModalOpen, onNewModalClose,
+                showLogin, showNew, auth, isAuthenticated, query, onSearch,
+                addingSuggestionPending, handleSubmit} = this.props;
 
         return (
             <nav className='navbar navbar-default navbar-static-top'>
@@ -48,13 +49,13 @@ class Navbar extends Component {
                         !isAuthenticated &&
                         <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={onLoginClick}>Sign in</button>
                     }
-                    <SearchBar onSearch={this.onSearch} searchQuery={this.query}/>
+                    <SearchBar query={query} onSearch={onSearch}/>
                 </div>
                 <Modal close={onModalClose} showModal={showLogin} title='Sign-in / Sign-up'>
                     <Login auth={auth} />
                 </Modal>
                 <Modal title='Create a new Suggestion' showModal={showNew} close={onNewModalClose}>
-                    <NewSuggestion/>
+                    <NewSuggestion addingSuggestionPending={addingSuggestionPending} closeModal={onNewModalClose} handleSubmit={handleSubmit}/>
                 </Modal>
             </nav>
         );
@@ -80,16 +81,32 @@ function mapDispatchToProps(dispatch) {
         onModalClose: () => dispatch(closeLoginModal()),
         onNewModalOpen: () => dispatch(openNewModal()),
         onNewModalClose: () => dispatch(closeNewModal()),
-        onSearch: (query) => dispatch(searchSuggestions(query))
+        onSearch: (event) => {
+            let query = event.currentTarget.value;
+            dispatch(queryUpdated(query));
+            if (query.length > 2) {
+                dispatch(search(query));
+            } else {
+                dispatch(push('/'));
+            }
+        },
+        handleSubmit: (title, content) => {
+            if (title && content) {
+                dispatch(createSuggestion(title, content))
+            }
+        },
     }
 }
 
 function mapStateToProps(state) {
-    const { showLogin, showNew, isAuthenticated } = state.ui;
+    const { showLogin, showNew, isAuthenticated, addingSuggestionPending } = state.ui;
+    const { query } = state.search;
     return {
         showLogin,
         showNew,
-        isAuthenticated
+        isAuthenticated,
+        addingSuggestionPending,
+        query
     };
 }
 
