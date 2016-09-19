@@ -94,7 +94,8 @@ function mapDispatchToProps(dispatch) {
         onNewModalOpen: () => dispatch(openNewModal()),
         onNewModalClose: () => dispatch(closeNewModal()),
         onSearch: (event) => {
-            let query = event.currentTarget.value;
+            event.preventDefault();
+            let query = event.currentTarget.value || '';
             dispatch(queryUpdated(query));
             if (query.length > 2) {
                 dispatch(search(query));
