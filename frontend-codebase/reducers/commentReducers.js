@@ -26,22 +26,30 @@ function comment(state = [], action) {
     }
 }
 
-export function comments(state = { isFetching: false, isSaving: false }, action) {
+export function comments(state = { isFetching: false, isSaving: false, isSaved: false }, action) {
     switch (action.type) {
         case REQUEST_COMMENTS:
             return Object.assign({}, state, {
-                isFetching: true
+                isFetching: true,
+                isSaved: false
             });
         case ADDING_COMMENT:
             return Object.assign({}, state, {
-                isSaving: true
+                isSaving: true,
+                isSaved: false
             });
-        case COMMENT_ADDED:
+        case COMMENT_ADDED:return Object.assign({}, state, {
+                [action.id]: comment(state[action.id], action),
+                isFetching: false,
+                isSaving: false,
+                isSaved: true
+            });
         case RECEIVED_COMMENTS:
             return Object.assign({}, state, {
                 [action.id]: comment(state[action.id], action),
                 isFetching: false,
-                isSaving: false
+                isSaving: false,
+                isSaved: false
             });
         default:
             return state;

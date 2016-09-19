@@ -55,11 +55,11 @@ class Navbar extends Component {
                     }
                     {
                         isAuthenticated &&
-                        <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={onLogoutClick}>Sign out</button>
+                        <button type='button' className='btn btn-default navbar-btn navbar-right pull-right login' onClick={onLogoutClick}>Sign out</button>
                     }
                     {
                         !isAuthenticated &&
-                        <button type='button' className='btn btn-default navbar-btn navbar-right login' onClick={onLoginClick}>Sign in</button>
+                        <button type='button' className='btn btn-default navbar-btn navbar-right pull-right login' onClick={onLoginClick}>Sign in</button>
                     }
                     <SearchBar query={query} onSearch={onSearch} isFetching={isFetching}/>
                 </div>

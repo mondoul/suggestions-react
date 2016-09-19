@@ -11,7 +11,8 @@ describe('Testing comments reducer', () => {
             comments(undefined, {})
         ).toEqual({
             isFetching: false,
-            isSaving: false
+            isSaving: false,
+            isSaved: false
         })
     });
 
@@ -22,7 +23,8 @@ describe('Testing comments reducer', () => {
             })
         ).toEqual({
             isFetching: true,
-            isSaving: false
+            isSaving: false,
+            isSaved: false
         })
     });
 
@@ -36,7 +38,8 @@ describe('Testing comments reducer', () => {
         ).toEqual({
             suggestionId_QWERTY: [{content: 'comment 1'}, {content: 'comment 2'}],
             isFetching: false,
-            isSaving: false
+            isSaving: false,
+            isSaved: false
         })
     });
 
@@ -56,7 +59,8 @@ describe('Testing comments reducer', () => {
             suggestionId_QWERTY: [{content: 'comment 1'}, {content: 'comment 2'}, {content: 'comment 3'}, {content: 'comment 4'}],
             suggestionId_AZERTY: [{content: 'comment X'}, {content: 'comment Y'}],
             isFetching: false,
-            isSaving: false
+            isSaving: false,
+            isSaved: false
         })
     });
 
@@ -65,7 +69,7 @@ describe('Testing comments reducer', () => {
            comments(undefined, {
                type: ADDING_COMMENT
            })
-       ).toEqual({ isFetching: false, isSaving: true })
+       ).toEqual({ isFetching: false, isSaving: true, isSaved: false })
     });
 
     it('should handle ADDING_COMMENTS with existing data', () => {
@@ -82,7 +86,8 @@ describe('Testing comments reducer', () => {
             suggestionId_QWERTY: [{content: 'comment 1'}, {content: 'comment 2'}],
             suggestionId_AZERTY: [{content: 'comment X'}, {content: 'comment Y'}],
             isFetching: false,
-            isSaving: true })
+            isSaving: true,
+            isSaved: false })
     });
 
     it('should handle COMMENT_ADDED', () => {
@@ -95,7 +100,8 @@ describe('Testing comments reducer', () => {
         ).toEqual({
             suggestionId_QWERTY: [{content: 'this is my comment'}],
             isFetching: false,
-            isSaving: false
+            isSaving: false,
+            isSaved: true
         })
     });
 
@@ -115,7 +121,8 @@ describe('Testing comments reducer', () => {
             suggestionId_QWERTY: [{content: 'this is my comment'}],
             suggestionId_AZERTY: [{content: 'this is another comment'}, {content: 'comment X'}, {content: 'comment Y'}],
             isFetching: false,
-            isSaving: false
+            isSaving: false,
+            isSaved: true
         })
     });
 });

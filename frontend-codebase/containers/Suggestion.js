@@ -30,7 +30,7 @@ class Suggestion extends Component {
 
     render() {
         const { suggestion, isFetching, isAuthenticated, id,
-            handleSubmit, comments, isFetchingComments, isSaving } = this.props;
+            handleSubmit, comments, isFetchingComments, isSaving, isSaved } = this.props;
 
         return(
             <div className='suggestion-component-container'>
@@ -43,7 +43,7 @@ class Suggestion extends Component {
                         <div>
                             <SuggestionDetail suggestion={suggestion} like={() => this.like() } dislike={() => this.dislike()} authenticated={isAuthenticated} />
                             <hr/>
-                            <CommentForm handleSubmit={handleSubmit} suggestionId={id} isAdding={isSaving}/>
+                            <CommentForm handleSubmit={handleSubmit} suggestionId={id} isAdding={isSaving} isSaved={isSaved} isAuthenticated={isAuthenticated}/>
                             <CommentList comments={comments} isFetching={isFetchingComments} />
                         </div>
                     ) : null
@@ -65,8 +65,7 @@ function mapStateToProps(state, ownProps) {
     const id = ownProps.params.suggestionId;
     const suggestion = state.suggestions.items.find(el => { return el._id === id; }) || {};
     const comments = state.comments[id] ?  state.comments[id] : [];
-    console.log('comments', comments);
-    const { isFetching:isFetchingComments, isSaving } = state.comments;
+    const { isFetching:isFetchingComments, isSaving, isSaved } = state.comments;
     const { isAuthenticated } = state.ui;
 
     return {
@@ -76,7 +75,8 @@ function mapStateToProps(state, ownProps) {
         isAuthenticated,
         comments,
         isFetchingComments,
-        isSaving
+        isSaving,
+        isSaved
     }
 }
 
