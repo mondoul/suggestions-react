@@ -5,16 +5,9 @@ import {
 } from '../actions/actionsConst';
 import { suggestions, suggestionsByFilter } from '../reducers/suggestionReducers';
 
-describe('Empty test', function () {
-    it ('empty test runs successfully', function () {
-        expect('a').toEqual('a');
-    });
-});
+describe('Testing suggestions reducer', () => {
 
-
-describe('suggestions reducer', () => {
-
-   it('should return the initial state', () => {
+    it('should return the initial state', () => {
        expect(
            suggestions(undefined, {})
        ).toEqual({
@@ -22,6 +15,49 @@ describe('suggestions reducer', () => {
            items: []
        })
    });
+
+    it('should handle REQUEST_SUGGESTIONS', () => {
+       expect(
+           suggestionsByFilter(undefined, {
+               type: REQUEST_SUGGESTIONS,
+               filter: 'top',
+               size: 10
+           })
+       ).toEqual({
+            top: {
+                isFetching: true,
+                items: []
+            }
+       })
+    });
+
+    it('should handle REQUEST_SUGGESTIONS with existing data', () => {
+        expect(
+            suggestionsByFilter({
+                top: {
+                        items: [{id: 1, content: 'text'}],
+                        isFetching: false,
+                    },
+                last: {
+                        items: [{id: 1, content: 'text'}],
+                        isFetching: true,
+                }
+                }, {
+                type: REQUEST_SUGGESTIONS,
+                filter: 'top',
+                size: 10
+            })
+        ).toEqual({
+            top: {
+                items: [{id: 1, content: 'text'}],
+                isFetching: true,
+            },
+            last: {
+                items: [{id: 1, content: 'text'}],
+                isFetching: true,
+            }
+        })
+    });
 
     it('should handle RECEIVE_A_SUGGESTION', () => {
         expect(

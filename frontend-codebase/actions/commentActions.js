@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import config from '../config';
 import { auth } from '../utils/initializeAuth';
-import { push } from 'react-router-redux';
 import * as actions from './actionsConst';
 
 
