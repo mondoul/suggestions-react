@@ -93,6 +93,41 @@ router.get('/:suggestion_id', function(req, res, next) {
     });
 });
 
+// PUT Suggestion
+router.put('/:suggestion_id', authCheck, function(req, res, next) {
+    var id = req.params.suggestion_id;
+    var content = req.body.content;
+    var title = req.body.title;
+    var email = req.user.email;
+
+    console.log('Updating suggestion', id, content, email);
+
+    Suggestion.findById(id).exec(function (err, sugg) {
+
+        if (err) return next(err);
+
+        if(!sugg) return next();
+
+        if (sugg.author !== email) {
+            res.status(403).send({ message : 'You\'re not allowed to update this suggestion.'});
+        }
+        else {
+            console.log('Updating content');
+            Suggestion.updateContent(id, title, content, function (err) {
+                if (err) return next(err);
+                console.log('no error');
+                sugg.content = content;
+                sugg.title = title;
+                sugg.updated = Date.now();
+
+                res.send({message: 'Suggestion updated!', suggestion: sugg});
+            });
+        }
+    });
+
+
+});
+
 // DELETE Suggestion
 router.delete('/:suggestion_id', authCheck,  function (req, res, next) {
     var id = req.params.suggestion_id;
@@ -103,7 +138,7 @@ router.delete('/:suggestion_id', authCheck,  function (req, res, next) {
 
         sugg.remove(function (err) {
             if (err) return next(err);
-            res.send('Deleted');
+            res.send({ message: 'Suggestion deleted.'});
         });
     });
 });

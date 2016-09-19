@@ -20,14 +20,11 @@ const requireAuth = (nextState, replace) => {
 function parseAuthHash(store) {
   return (nextState, replace) => {
       if (nextState.location.hash) {
-          var returnUrl = auth.parseHash(nextState.location.hash);
-          if (auth.loggedIn()){
-              store.dispatch(hasLoggedIn());
-          }
+          var returnUrl = auth.parseHash(nextState.location.hash, (profile) => store.dispatch(hasLoggedIn(profile)) );
           replace({ pathname: returnUrl });
       } else {
           if (auth.loggedIn()){
-              store.dispatch(hasLoggedIn());
+              store.dispatch(hasLoggedIn(auth.getProfile()));
           }
       }
   };

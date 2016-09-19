@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import config from '../config';
 import { auth } from '../utils/initializeAuth';
-import { closeNewModal } from './uiActions';
+import { closeNewModal, closeEditModal } from './uiActions';
 import { push } from 'react-router-redux';
 import * as actions from './actionsConst';
 
@@ -157,21 +157,21 @@ export function dislikeSuggestion(id) {
  * Add a new Suggestion
  */
 
-function addingSuggestion(){
+function savingSuggestion(){
     return {
-        type: actions.ADDING_SUGGESTION
+        type: actions.SAVING_SUGGESTION
     }
 }
 
-function addedSuggestion(){
+function suggestionSaved(){
     return {
-        type: actions.ADDED_SUGGESTION
+        type: actions.SUGGESTION_SAVED
     }
 }
 
 export function createSuggestion(title, content) {
     return dispatch => {
-        dispatch(addingSuggestion());
+        dispatch(savingSuggestion());
 
         return fetch(`${config.apiUrl}/suggestions`, {
             method: 'POST',
@@ -183,7 +183,7 @@ export function createSuggestion(title, content) {
         }).then(response => {
             if (response.status >= 400) {
                 toastr.error(response.statusText);
-                dispatch(addedSuggestion());
+                dispatch(suggestionSaved());
                 return Promise.resolve();
             } else {
                 return response.json();
@@ -191,10 +191,90 @@ export function createSuggestion(title, content) {
         })
         .then(json => {
             toastr.success(json.message);
-            dispatch(addedSuggestion());
+            dispatch(suggestionSaved());
             dispatch(closeNewModal());
             dispatch(fetchMostRecentSuggestions());
             dispatch(fetchTopSuggestions());
+        })
+    }
+}
+
+/*
+ * Delete a suggestion
+ */
+
+function deletingSuggestion() {
+    return {
+        type: actions.DELETING_SUGGESTION
+    }
+}
+
+function suggestionDeleted(id) {
+    return {
+        type: actions.DELETED_SUGGESTION,
+        id
+    }
+}
+
+export function deleteSuggestion(id) {
+    return dispatch => {
+        dispatch(deletingSuggestion());
+
+        return fetch(`${config.apiUrl}/suggestions/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + auth.getToken()
+            }
+        }).then(response => {
+            if (response.status >= 400) {
+                toastr.error(response.statusText);
+                return Promise.resolve();
+            } else {
+                return response.json();
+            }
+        }).then(json => {
+            toastr.success(json.message);
+            dispatch(suggestionDeleted(id));
+            dispatch(push('/'));
+        })
+    }
+}
+
+/*
+ * Edit a suggestion
+ */
+
+function suggestionEdited(suggestion) {
+    return {
+        type: actions.UPDATED_SUGGESTION,
+        suggestion
+    }
+}
+
+export function editSuggestion(id, title, content) {
+    return dispatch => {
+        dispatch(savingSuggestion());
+        return fetch(`${config.apiUrl}/suggestions/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + auth.getToken()
+            },
+            body: JSON.stringify({title, content})
+        }).then(response => {
+            if (response.status >= 400) {
+                toastr.error(response.statusText);
+                dispatch(suggestionEdited());
+                return Promise.resolve();
+            } else {
+                return response.json();
+            }
+        }).then(json => {
+            toastr.success(json.message);
+            dispatch(suggestionEdited(json.suggestion));
+            dispatch(suggestionSaved());
+            dispatch(closeEditModal());
         })
     }
 }

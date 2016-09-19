@@ -26,7 +26,7 @@ class AuthService {
         this.auth0.signup(params, onError);
     }
 
-    parseHash(hash){
+    parseHash(hash, callback){
         const authResult = this.auth0.parseHash(hash);
         if (authResult && authResult.idToken) {
             this.setToken(authResult.idToken);
@@ -35,6 +35,7 @@ class AuthService {
                     console.log('Error loading the Profile', error);
                 } else {
                     this.setProfile(profile);
+                    callback(profile);
                 }
             });
             return localStorage.getItem('returnUrl');

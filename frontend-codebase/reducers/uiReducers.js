@@ -1,11 +1,14 @@
-import { OPEN_LOGIN, CLOSE_LOGIN, LOGIN, LOGOUT, OPEN_NEW, CLOSE_NEW,
-        ADDING_SUGGESTION, ADDED_SUGGESTION } from '../actions/actionsConst';
+import { OPEN_LOGIN, CLOSE_LOGIN, LOGIN, LOGOUT, OPEN_NEW, CLOSE_NEW, OPEN_EDIT, CLOSE_EDIT,
+        SAVING_SUGGESTION, SUGGESTION_SAVED } from '../actions/actionsConst';
 
 export function uiInteractions(state = {
     showLogin: false,
     showNew: false,
+    showEdit: false,
     isAuthenticated: false,
-    addingSuggestionPending: false
+    savingSuggestionPending: false,
+    showDeleteConfirm: false,
+    profile: {}
 }, action) {
     switch (action.type) {
         case OPEN_LOGIN:
@@ -18,11 +21,13 @@ export function uiInteractions(state = {
             });
         case LOGIN:
             return Object.assign({}, state, {
-                isAuthenticated: true
+                isAuthenticated: true,
+                profile: action.profile
             });
         case LOGOUT:
             return Object.assign({}, state, {
-                isAuthenticated: false
+                isAuthenticated: false,
+                profile: {}
             });
         case OPEN_NEW:
             return Object.assign({}, state, {
@@ -32,13 +37,21 @@ export function uiInteractions(state = {
             return Object.assign({}, state, {
                 showNew: false
             });
-        case ADDING_SUGGESTION:
+        case OPEN_EDIT:
             return Object.assign({}, state, {
-                addingSuggestionPending: true
+                showEdit: true
             });
-        case ADDED_SUGGESTION:
+        case CLOSE_EDIT:
             return Object.assign({}, state, {
-                addingSuggestionPending: false
+                showEdit: false
+            });
+        case SAVING_SUGGESTION:
+            return Object.assign({}, state, {
+                savingSuggestionPending: true
+            });
+        case SUGGESTION_SAVED:
+            return Object.assign({}, state, {
+                savingSuggestionPending: false
             });
         default:
             return state;

@@ -2,7 +2,24 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Form, FormGroup, FormControl, ControlLabel, Button, ButtonToolbar } from 'react-bootstrap';
 
-class NewSuggestion extends Component {
+class EditSuggestion extends Component {
+    constructor(props) {
+        super(props);
+        if (!props.suggestion || props.suggestion === {}){
+            this.suggestion = {
+                title: '',
+                content: ''
+            }
+        } else {
+            this.suggestion = props.suggestion;
+        }
+
+    }
+
+    componentDidMount() {
+        ReactDOM.findDOMNode(this.refs.title).value = this.suggestion.title;
+        ReactDOM.findDOMNode(this.refs.suggestionBody).value = this.suggestion.content;
+    }
 
     saveChanges(event) {
         event.preventDefault();
@@ -17,7 +34,7 @@ class NewSuggestion extends Component {
 
     render() {
 
-        const { closeModal, addingSuggestionPending } = this.props;
+        const { cancel, savingSuggestionPending } = this.props;
 
         return (
             <Form onSubmit={this.saveChanges.bind(this)} className='form-horizontal new-form'>
@@ -35,14 +52,14 @@ class NewSuggestion extends Component {
                 </FormGroup>
                 <ButtonToolbar>
                     {
-                        addingSuggestionPending &&
+                        savingSuggestionPending &&
                         <Button bsStyle='primary' disabled>Saving...</Button>
                     }
                     {
-                        !addingSuggestionPending &&
+                        !savingSuggestionPending &&
                         <Button type='submit' bsStyle='primary'>Save Changes</Button>
                     }
-                    <Button onClick={closeModal}>Cancel</Button>
+                    <Button onClick={cancel}>Cancel</Button>
                 </ButtonToolbar>
             </Form>
 
@@ -51,10 +68,11 @@ class NewSuggestion extends Component {
     }
 }
 
-NewSuggestion.propTypes = {
-    addingSuggestionPending: PropTypes.bool.isRequired,
-    closeModal: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired
+EditSuggestion.propTypes = {
+    savingSuggestionPending: PropTypes.bool.isRequired,
+    cancel: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
+    suggestion: PropTypes.object
 };
 
-export default NewSuggestion;
+export default EditSuggestion;

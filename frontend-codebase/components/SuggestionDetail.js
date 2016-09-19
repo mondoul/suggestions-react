@@ -1,14 +1,21 @@
 import React, {PropTypes, Component} from 'react';
 import timeSince from '../utils/timeago';
+import SuggestionActionsDropdown from './SuggestionActionsDropdown';
 
 class SuggestionDetail extends Component {
 
     render() {
-        const { suggestion, like, dislike, authenticated } = this.props;
+        const { suggestion, like, dislike, authenticated, showActions, onActionSelected } = this.props;
 
         return (
             <div className='suggestion-component-container'>
                 <h2>{suggestion.title}</h2>
+                {
+                    showActions &&
+                    <div className='pull-right'>
+                        <SuggestionActionsDropdown id={suggestion._id} onActionSelected={onActionSelected}/>
+                    </div>
+                }
                 <div className='votes-container'>
                     {
                         authenticated ? (
@@ -37,9 +44,12 @@ class SuggestionDetail extends Component {
                         )
                     }
                 </div>
-                <div className='content'>{suggestion.content}</div>
+                <div className='content'>
+                    {suggestion.content}
+                </div>
                 <div className='author'>by {suggestion.author}, {timeSince(suggestion.created)} ago</div>
             </div>
+
         );
     }
 }
@@ -48,6 +58,8 @@ SuggestionDetail.propTypes = {
     suggestion: PropTypes.any.isRequired,
     like: PropTypes.func.isRequired,
     dislike: PropTypes.func.isRequired,
+    showActions: PropTypes.bool.isRequired,
+    onActionSelected: PropTypes.func.isRequired,
     authenticated: PropTypes.bool.isRequired
 };
 

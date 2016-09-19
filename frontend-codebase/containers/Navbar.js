@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import Modal from '../components/Modal';
 import Login from '../components/Login';
-import NewSuggestion from '../components/NewSuggestion';
+import EditSuggestion from '../components/EditSuggestion';
 import SearchBar from '../components/SearchBar';
 import { openLoginModal, closeLoginModal, openNewModal, closeNewModal, logout } from '../actions/uiActions';
 import { queryUpdated, search } from '../actions/searchActions';
@@ -29,7 +29,7 @@ class Navbar extends Component {
 
         const { onLogoutClick, onLoginClick, onModalClose, onNewModalOpen, onNewModalClose,
                 showLogin, showNew, auth, isAuthenticated, query, onSearch,
-                addingSuggestionPending, handleSubmit, isFetching} = this.props;
+                savingSuggestionPending, handleSubmit, isFetching} = this.props;
 
         return (
             <nav className='navbar navbar-default navbar-static-top'>
@@ -67,7 +67,7 @@ class Navbar extends Component {
                     <Login auth={auth} />
                 </Modal>
                 <Modal title='Create a new Suggestion' showModal={showNew} close={onNewModalClose}>
-                    <NewSuggestion addingSuggestionPending={addingSuggestionPending} closeModal={onNewModalClose} handleSubmit={handleSubmit}/>
+                    <EditSuggestion savingSuggestionPending={savingSuggestionPending} cancel={onNewModalClose} handleSubmit={handleSubmit}/>
                 </Modal>
             </nav>
         );
@@ -112,13 +112,13 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state) {
-    const { showLogin, showNew, isAuthenticated, addingSuggestionPending } = state.ui;
+    const { showLogin, showNew, isAuthenticated, savingSuggestionPending } = state.ui;
     const { query, isFetching } = state.search;
     return {
         showLogin,
         showNew,
         isAuthenticated,
-        addingSuggestionPending,
+        savingSuggestionPending,
         query,
         isFetching
     };

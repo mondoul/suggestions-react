@@ -5,6 +5,7 @@ var suggestionSchema = new mongoose.Schema({
     content: String,
     author: String,
     created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now },
     likes: { type: Number, default: 0},
     voters: []
 });
@@ -20,7 +21,6 @@ suggestionSchema.statics.likeOrDislike = function (id, email, isLike, callback) 
 
     var update = { $inc : { }, $push : { voters : email}};
     update.$inc.likes = isLike ? 1 : -1;
-    console.log('update: ' + JSON.stringify(update));
 
     this.update(query, update, function (err, numAffected) {
         if (err) return callback(err);
@@ -32,6 +32,22 @@ suggestionSchema.statics.likeOrDislike = function (id, email, isLike, callback) 
         callback();
     })
 };
+
+suggestionSchema.statics.updateContent = function (id, title, content, callback) {
+    var query = { _id: id};
+    var update = { content : content, title: title, updated : Date.now() };
+
+    this.update(query, update, function (err, numAffected) {
+
+        if (err) return callback(err);
+
+        if (0 === numAffected) {
+            return callback(new Error('no suggestion to modify'));
+        }
+
+        callback();
+    });
+}
 
 suggestionSchema.index({title: 'text', content: 'text' });
 

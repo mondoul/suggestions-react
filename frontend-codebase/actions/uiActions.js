@@ -13,6 +13,12 @@ export function openNewModal() {
     }
 }
 
+export function openEditModal() {
+    return {
+        type:actions.OPEN_EDIT
+    }
+}
+
 export function closeLoginModal() {
     return {
         type:actions.CLOSE_LOGIN
@@ -25,9 +31,16 @@ export function closeNewModal() {
     }
 }
 
-export function hasLoggedIn() {
+export function closeEditModal() {
     return {
-        type:actions.LOGIN
+        type:actions.CLOSE_EDIT
+    }
+}
+
+export function hasLoggedIn(profile) {
+    return {
+        type:actions.LOGIN,
+        profile
     }
 }
 

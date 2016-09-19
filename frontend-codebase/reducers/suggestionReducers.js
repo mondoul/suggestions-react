@@ -1,6 +1,6 @@
 import {
     REQUEST_SUGGESTIONS, RECEIVE_SUGGESTIONS, RECEIVE_A_SUGGESTION, REQUEST_A_SUGGESTION,
-    LIKE_SUGGESTION, DISLIKE_SUGGESTION, COMMENT_ADDED
+    LIKE_SUGGESTION, DISLIKE_SUGGESTION, UPDATED_SUGGESTION
 } from '../actions/actionsConst';
 
 export function suggestions(state = {
@@ -55,6 +55,25 @@ export function suggestions(state = {
                     return item;
                 })
             });
+        }
+        case UPDATED_SUGGESTION: {
+            let { suggestion } = action;
+            console.log('suggestion in action', suggestion);
+            if (!suggestion) {
+                return state;
+            }
+            console.log('updating state');
+            return Object.assign({}, state, {
+                items: state.items.map((item, i) => {
+                    if (item._id === suggestion._id) {
+                        return Object.assign({}, item, {
+                            content: suggestion.content,
+                            updated: suggestion.updated,
+                        })
+                    }
+                    return item;
+                })
+            })
         }
         default:
             return state;
