@@ -1,7 +1,7 @@
 import expect from 'expect';
 import {
     REQUEST_SUGGESTIONS, RECEIVE_SUGGESTIONS, RECEIVE_A_SUGGESTION, REQUEST_A_SUGGESTION,
-    LIKE_SUGGESTION, DISLIKE_SUGGESTION
+    LIKE_SUGGESTION, DISLIKE_SUGGESTION, UPDATED_SUGGESTION
 } from '../actions/actionsConst';
 import { suggestions, suggestionsByFilter } from '../reducers/suggestionReducers';
 
@@ -176,5 +176,28 @@ describe('Testing suggestions reducer', () => {
             })
         ).toEqual({isFetching: false, items: [{ _id: 1, likes: 10 }, { _id: 2, likes: 8 }]})
     });
+
+    it('should handle UPDATED_SUGGESTION', () => {
+            expect(
+                suggestions({
+                    isFetching: false,
+                    items: [{_id: 123, content: 'azerty', title: 'title 1'}, {
+                        _id: 456,
+                        content: 'qwerty',
+                        title: 'title 2'
+                    }]
+                }, {
+                    type: UPDATED_SUGGESTION,
+                    suggestion: {_id: 123, content: 'new content', title: 'new title', updated: '12/12/12'}
+                })
+            ).toEqual({
+                isFetching: false,
+                items: [
+                    {_id: 123, content: 'new content', title: 'new title', updated: '12/12/12'},
+                    {_id: 456, content: 'qwerty', title: 'title 2'}
+                ]
+            })
+        }
+    )
 
 });

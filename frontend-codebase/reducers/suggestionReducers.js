@@ -58,15 +58,16 @@ export function suggestions(state = {
         }
         case UPDATED_SUGGESTION: {
             let { suggestion } = action;
-            console.log('suggestion in action', suggestion);
+
             if (!suggestion) {
                 return state;
             }
-            console.log('updating state');
+
             return Object.assign({}, state, {
                 items: state.items.map((item, i) => {
                     if (item._id === suggestion._id) {
                         return Object.assign({}, item, {
+                            title: suggestion.title,
                             content: suggestion.content,
                             updated: suggestion.updated,
                         })

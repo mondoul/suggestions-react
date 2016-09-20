@@ -1,5 +1,5 @@
 import React, {PropTypes, Component} from 'react';
-import timeSince from '../utils/timeago';
+import moment from 'moment';
 
 class SuggestionSummary extends Component {
 
@@ -14,7 +14,13 @@ class SuggestionSummary extends Component {
                 </div>
                 <div className='content'>
                     <span className='title'>{suggestion.title}</span>
-                    <span className='created'>by {suggestion.author}, {timeSince(suggestion.created)} ago</span>
+                    {
+                        moment(suggestion.updated).isAfter(suggestion.created) ? (
+                            <span className='created'>{suggestion.author}, edited {moment(suggestion.updated).fromNow()}</span>
+                        ) : (
+                            <span className='created'>{suggestion.author}, {moment(suggestion.created).fromNow()}</span>
+                        )
+                    }
                 </div>
             </div>
         );

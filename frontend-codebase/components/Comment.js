@@ -1,5 +1,5 @@
 import React, {PropTypes, Component} from 'react';
-import timeSince from '../utils/timeago';
+import moment from 'moment';
 
 class Comment extends Component {
 
@@ -11,7 +11,7 @@ class Comment extends Component {
                     {comment.content}
                 </div>
                 <div className='details'>
-                    <span>{comment.author}, {timeSince(comment.date)} ago</span>
+                    <span>{comment.author}, {moment(comment.date).fromNow()}</span>
                 </div>
             </div>
         )
