@@ -5,7 +5,7 @@ Suggestion application using React + Redux + NodeJs + MongoDb
 ## Pre-requisites
 
 - [Docker](https://docs.docker.com/docker-for-mac/)
-- [Node](https://nodejs.org/en/download/) (v4.4+)
+- [Node](https://nodejs.org/en/download/) (v6.6+)
 - Bower (using: `npm install -g bower`)
 
 ## Running the app in development mode
