@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-var suggestionSchema = new mongoose.Schema({
+const suggestionSchema = new mongoose.Schema({
     title: String,
     content: String,
     author: String,
@@ -47,7 +47,7 @@ suggestionSchema.statics.updateContent = function (id, title, content, callback)
 
         callback();
     });
-}
+};
 
 suggestionSchema.index({title: 'text', content: 'text' });
 
@@ -59,6 +59,6 @@ Suggestion.on('afterRemove', function (sugg) {
             console.error('had trouble cleaning up old comments', err.stack);
         }
     })
-})
+});
 
-module.exports = Suggestion;
+export default Suggestion;

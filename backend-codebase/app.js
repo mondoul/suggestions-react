@@ -1,20 +1,16 @@
-var express = require('express');
-var cors = require('cors');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+import express from 'express';
+import cors from 'cors';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose'
+import path from 'path';
+import favicon from 'serve-favicon';
+import { getConfig } from './config';
+import suggestions from './routes/suggestions';
+import comments from './routes/comments';
 
-var mongoose = require('mongoose');
-var models = require('./models');
-
-var config = require('./config');
-var suggestions = require('./routes/suggestions');
-var comments = require('./routes/comments');
-
-
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,19 +26,14 @@ app.use(cookieParser());
 // Here we use the public dir for our FE assets, maybe we want this to be different based on the ENV
 app.use(express.static(path.join(__dirname, 'public')));
 
-var MONGO_DB;
-var DOCKER_DB = process.env.DB_PORT;
-if ( DOCKER_DB ) {
-    MONGO_DB = DOCKER_DB.replace( 'tcp', 'mongodb' ) + '/suggestions';
-} else {
-    MONGO_DB = config.database;
-}
 
-mongoose.connect(MONGO_DB, function(err) {
+const MONGO_DB = process.env.NODE_ENV ? 'db:27017': getConfig().database;
+
+mongoose.connect('mongodb://' + MONGO_DB, (err) => {
     if (err) throw err;
 });
 
-mongoose.connection.on('error', function() {
+mongoose.connection.on('error', () => {
     console.info('Error: Could not connect to MongoDB. Did you forget to run `mongod`?');
 });
 
@@ -51,8 +42,8 @@ app.use('/api/suggestions', suggestions);
 app.use('/api/comments', comments);
 
 // Render the index page for all routes
-app.get('*', function(req, res) {
+app.get('*', (req, res) => {
     res.status(200).render('index', {title: 'Suggestions'});
 });
 
-module.exports = app;
+export default app;

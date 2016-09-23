@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var ObjectId = mongoose.Schema.Types.ObjectId;
+import mongoose from 'mongoose';
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
-var comment = new mongoose.Schema({
+let comment = new mongoose.Schema({
     content: { type: String, trim: true, validate: validateText },
     author: String,
     post: { type: ObjectId, index: true },
@@ -12,4 +12,4 @@ function validateText (str) {
     return str.length < 250;
 }
 
-module.exports = mongoose.model('Comment', comment);
+export default mongoose.model('Comment', comment);

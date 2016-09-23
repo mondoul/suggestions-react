@@ -1,11 +1,16 @@
-var express = require('express');
-var config = require('../config');
+import express from 'express';
+import { getConfig } from '../config';
+import mongoose from 'mongoose';
+import jwt from 'express-jwt';
+import _ from 'lodash';
+import modelSuggestion from '../models/suggestion';
+import modelComment from '../models/comment';
+
+
 var router = express.Router();
-var mongoose = require('mongoose')
 var Suggestion = mongoose.model('Suggestion');
 var Comment = mongoose.model('Comment');
-var jwt = require('express-jwt');
-var _ = require('lodash');
+var config = getConfig();
 
 const authCheck = jwt({
     secret: new Buffer(config.auth0Secret, 'base64'),
@@ -193,4 +198,4 @@ router.put('/:suggestion_id/dislike', authCheck, function (req, res, next) {
 });
 
 
-module.exports = router;
+export default router;

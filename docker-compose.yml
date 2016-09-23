@@ -1,23 +1,24 @@
-db:
-  image: mongo
-  ports:
-    - 27017:27017
-  command: "--smallfiles --logpath=/dev/null"
-  environment:
-      DNSDOCK_NAME: db
-      DNSDOCK_IMAGE: webservice
-web:
-  image: amondoulet/node-alpine
-  entrypoint: /app/scripts/dev-entrypoint.sh
-  volumes:
-    - ./backend-codebase:/app
-    - ./frontend-codebase/dist:/app/public/
-  ports:
-    - "80:3000"
-  links:
-    - db
-  environment:
-    AUTH0_SECRET: xIOzOMRQX8tBgDKds9iEZLMWb72H2qovgDzUldgDanmaHes3vzancY9-zz58O4Bw
-    AUTH0_CLIENTID: ClohFBYJyM7q0Nc6y9tY5blht98wjaBw
-    PORT: 3000
-    NODE_ENV: development
+version: '2'
+services:
+  db:
+    image: mongo
+    container_name: "suggestion-db"
+    ports:
+      - 27017:27017
+
+  web:
+    image: node:wheezy
+    entrypoint: /app/scripts/dev-entrypoint.sh
+    container_name: "suggestion-web"
+    volumes:
+      - ./backend-codebase:/app
+      - ./frontend-codebase/dist:/app/public/
+    ports:
+      - "80:3000"
+    depends_on:
+      - db
+    environment:
+      AUTH0_SECRET: xIOzOMRQX8tBgDKds9iEZLMWb72H2qovgDzUldgDanmaHes3vzancY9-zz58O4Bw
+      AUTH0_CLIENTID: ClohFBYJyM7q0Nc6y9tY5blht98wjaBw
+      PORT: 3000
+      NODE_ENV: development
