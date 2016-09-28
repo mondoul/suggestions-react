@@ -92,7 +92,7 @@ function mapStateToProps(state, ownProps) {
     const comments = state.comments[id] ?  state.comments[id] : [];
     const { isFetching:isFetchingComments, isSaving, isSaved } = state.comments;
     const { isAuthenticated, savingSuggestionPending, showEdit } = state.ui;
-    const showActions = suggestion !== {} && isAuthenticated && state.ui.profile.email === suggestion.author;
+    const showActions = suggestion !== {} && isAuthenticated && state.ui.profile.email === suggestion.author && suggestion.likes == 0;
 
     return {
         id,
@@ -111,7 +111,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        handleSubmit: (id, content) => dispatch(postComment(id, content)),
+        handleSubmit: (id, content, isAnonymous) => dispatch(postComment(id, content, isAnonymous)),
         onActionSelected: (eventKey, event) => {
             switch(eventKey){
                 case 'edit':

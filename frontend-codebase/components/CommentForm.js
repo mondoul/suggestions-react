@@ -21,8 +21,9 @@ class CommentForm extends Component {
         const { handleSubmit, suggestionId } = this.props;
 
         const content = ReactDOM.findDOMNode(this.refs.content).value.trim();
+        const isAnonymous = ReactDOM.findDOMNode(this.refs.isAnonymous).checked;
 
-        handleSubmit(suggestionId, content);
+        handleSubmit(suggestionId, content, isAnonymous);
     }
 
     render() {
@@ -41,6 +42,12 @@ class CommentForm extends Component {
                             !isAuthenticated &&
                             <FormControl componentClass='textarea' rows='3' ref='content' placeholder='Login or Sign-up to post a comment' disabled/>
                         }
+                    </div>
+                </FormGroup>
+                <FormGroup>
+                    <ControlLabel className='col-sm-2'>Anonymously ?</ControlLabel>
+                    <div className='col-sm-8'>
+                        <input type="checkbox" ref='isAnonymous' value='anonymous'/>
                     </div>
                 </FormGroup>
                 <ButtonToolbar>

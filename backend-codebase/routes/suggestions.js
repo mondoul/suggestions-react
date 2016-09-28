@@ -21,7 +21,7 @@ const authCheck = jwt({
 router.post('/', authCheck, function(req, res, next) {
     var title = req.body.title;
     var content = req.body.content;
-    var author = req.user.email;
+    var author = req.body.isAnonymous ? 'anonymous' : req.user.email;
 
     Suggestion.create({
         title: title,

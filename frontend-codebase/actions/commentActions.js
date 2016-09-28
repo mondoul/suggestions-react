@@ -22,7 +22,7 @@ function addedComment(id, comment) {
     }
 }
 
-export function postComment(id, content) {
+export function postComment(id, content, isAnonymous) {
     return dispatch => {
         dispatch(addingComment());
 
@@ -32,7 +32,7 @@ export function postComment(id, content) {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + auth.getToken()
             },
-            body: JSON.stringify({ content})
+            body: JSON.stringify({ content, isAnonymous})
         }).then(response => {
             if (response.status >= 400) {
                 toastr.error(response.statusText);

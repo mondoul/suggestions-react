@@ -19,7 +19,7 @@ const pageSize = 10;
 
 router.post('/:suggestion_id', authCheck, function (req, res, next) {
     var content = req.body.content;
-    var author = req.user.email;
+    var author = req.body.isAnonymous ? 'anonymous' : req.user.email;
 
     Comment.create({
         content: content,

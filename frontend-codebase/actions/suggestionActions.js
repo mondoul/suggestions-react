@@ -169,7 +169,7 @@ function suggestionSaved(){
     }
 }
 
-export function createSuggestion(title, content) {
+export function createSuggestion(title, content, isAnonymous) {
     return dispatch => {
         dispatch(savingSuggestion());
 
@@ -179,7 +179,7 @@ export function createSuggestion(title, content) {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + auth.getToken()
             },
-            body: JSON.stringify({title, content})
+            body: JSON.stringify({title, content, isAnonymous})
         }).then(response => {
             if (response.status >= 400) {
                 toastr.error(response.statusText);

@@ -103,9 +103,9 @@ function mapDispatchToProps(dispatch) {
                 dispatch(push('/'));
             }
         },
-        handleSubmit: (title, content) => {
+        handleSubmit: (title, content, isAnonymous) => {
             if (title && content) {
-                dispatch(createSuggestion(title, content))
+                dispatch(createSuggestion(title, content, isAnonymous))
             }
         },
     }
