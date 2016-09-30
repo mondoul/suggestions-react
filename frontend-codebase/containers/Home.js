@@ -22,7 +22,7 @@ class Home extends Component {
         const { selectCategory } = this.props;
 
         return (
-            <li role='presentation' className={isActive?'active':''} onClick={() => selectCategory(category._id)}><a onClick={(e) => e.preventDefault()} href='#'>{category.title}</a></li>
+            <li role='presentation' key={category._id} className={isActive?'active':''} onClick={() => selectCategory(category._id)}><a onClick={(e) => e.preventDefault()} href='#'>{category.title}</a></li>
         )
     }
 

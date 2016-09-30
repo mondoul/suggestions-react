@@ -11,5 +11,10 @@ module.exports = paths = {
         entries: 'main.js'
     },
     less: 'stylesheets/*.less',
-    dist: 'dist/'
+    dist: 'dist/',
+    deployFiles: ['dist/css/**/*.*',
+                 'dist/fonts/*.*',
+                 'dist/js/*.*',
+                 'dist/favicon.ico'],
+    deploy: '../backend-codebase/public/'
 };

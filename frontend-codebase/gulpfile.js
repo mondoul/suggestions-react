@@ -5,6 +5,7 @@ var gulpif = require('gulp-if');
 var autoprefixer = require('gulp-autoprefixer');
 var cssmin = require('gulp-cssmin');
 var less = require('gulp-less');
+var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var plumber = require('gulp-plumber');
 var buffer = require('vinyl-buffer');
@@ -131,6 +132,16 @@ gulp.task('test', function () {
 
 gulp.task('watch', function() {
     gulp.watch(path.less, ['styles']);
+});
+
+gulp.task('clean', function(){
+     gulp.src([path.deploy + '*'], {read:false})
+        .pipe(clean({force: true}));
+});
+
+gulp.task('deploy', ['clean', 'build'], function () {
+    gulp.src(path.deployFiles, { base: 'dist'})
+        .pipe(gulp.dest(path.deploy));
 });
 
 gulp.task('default', ['styles', 'vendor', 'browserify-watch', 'watch']);

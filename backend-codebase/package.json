@@ -3,9 +3,7 @@
   "version": "0.0.1",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon ./bin/www --exec babel-node",
-    "build": "babel . -d dist",
-    "serve": "node dist/bin/www.js"
+    "start": "nodemon ./bin/www --exec babel-node"
   },
   "babel": {
     "presets": [
@@ -14,7 +12,6 @@
     ]
   },
   "dependencies": {
-    "alt": "^0.17.8",
     "async": "^1.5.0",
     "body-parser": "^1.14.1",
     "cookie-parser": "^1.4.3",
