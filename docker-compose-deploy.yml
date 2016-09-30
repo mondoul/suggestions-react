@@ -9,7 +9,7 @@ services:
       - 27017:27017
 
   web:
-    image: usvaltech/suggestion:latest
+    build: .
     command: "npm start"
     container_name: "suggestion-web"
     ports:
@@ -20,4 +20,4 @@ services:
       AUTH0_SECRET: xIOzOMRQX8tBgDKds9iEZLMWb72H2qovgDzUldgDanmaHes3vzancY9-zz58O4Bw
       AUTH0_CLIENTID: ClohFBYJyM7q0Nc6y9tY5blht98wjaBw
       PORT: 3000
-      NODE_ENV: development
+      NODE_ENV: production

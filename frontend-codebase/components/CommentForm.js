@@ -9,7 +9,6 @@ class CommentForm extends Component {
         const { isSaved } = this.props;
 
         if (isSaved) {
-            console.log('isSaved');
             ReactDOM.findDOMNode(this.refs.content).value = '';
         }
     }

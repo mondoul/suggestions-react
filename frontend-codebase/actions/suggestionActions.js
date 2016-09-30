@@ -105,7 +105,6 @@ export function retrieveASuggestionIfNeeded(id) {
  */
 
 function votedLikeSuggestion(id) {
-    console.log('like suggestion');
     return {
         type: actions.LIKE_SUGGESTION,
         id

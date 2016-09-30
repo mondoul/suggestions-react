@@ -7,13 +7,16 @@ import suggestionsByFilter from '../reducers';
 const loggerMiddleware = createLogger();
 
 export default function configureStore(preloadedState, browserHistory) {
+
+    let middleware = [thunkMiddleware, routerMiddleware(browserHistory)];
+
+    if (process.env.NODE_ENV !== 'production') {
+        middleware = [...middleware, loggerMiddleware];
+    }
+
     return createStore(
         suggestionsByFilter,
         preloadedState,
-        applyMiddleware(
-            thunkMiddleware,
-            loggerMiddleware,
-            routerMiddleware(browserHistory)
-        )
+        applyMiddleware(...middleware)
     );
 };

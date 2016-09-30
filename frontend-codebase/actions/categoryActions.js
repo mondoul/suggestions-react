@@ -24,7 +24,6 @@ function receiveCategories(json) {
 
 function shouldRequestCategories(state, id) {
     if (!state.categories) {
-        console.log('no categories in state')
         return true;
     }
 
@@ -32,7 +31,6 @@ function shouldRequestCategories(state, id) {
         return el._id === id;
     });
 
-    console.log('category not found', id, state.categories);
     return !category && !state.categories.isFetching;
 }
 

@@ -125,7 +125,7 @@ function mapStateToProps(state) {
     const { showLogin, showNew, isAuthenticated, savingSuggestionPending } = state.ui;
     const { query, isFetching } = state.search;
     const { items: categories } = state.categories;
-    console.log('categories', categories);
+
     return {
         showLogin,
         showNew,

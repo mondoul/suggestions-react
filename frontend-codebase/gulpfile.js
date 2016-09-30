@@ -62,7 +62,7 @@ gulp.task('browserify-vendor', function() {
  |--------------------------------------------------------------------------
  */
 gulp.task('browserify', ['browserify-vendor'], function() {
-    return browserify({ entries: path.js.entries, debug: true })
+    return browserify({ entries: path.js.entries, debug: !production })
         .external(dependencies)
         .transform(babelify, { presets: ['es2015', 'react'] })
         .bundle()
@@ -139,7 +139,20 @@ gulp.task('clean', function(){
         .pipe(clean({force: true}));
 });
 
-gulp.task('deploy', ['clean', 'build'], function () {
+gulp.task('apply-prod-environment', function() {
+    process.stdout.write("Setting NODE_ENV to 'production'" + "\n");
+    process.env.NODE_ENV = 'production';
+    process.env.HOME_URL = 'http://http://ec2-54-88-48-118.compute-1.amazonaws.com/';
+    process.env.API_URL = 'http://http://ec2-54-88-48-118.compute-1.amazonaws.com/api';
+    if (process.env.NODE_ENV != 'production') {
+        throw new Error("Failed to set NODE_ENV to production!!!!");
+    } else {
+        process.stdout.write("Successfully set NODE_ENV to production" + "\n");
+    }
+});
+
+gulp.task('deploy', ['clean', 'apply-prod-environment', 'build'], function () {
+
     gulp.src(path.deployFiles, { base: 'dist'})
         .pipe(gulp.dest(path.deploy));
 });

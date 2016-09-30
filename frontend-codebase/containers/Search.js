@@ -8,7 +8,6 @@ class Search extends Component {
     render() {
 
         const { isFetching, results, categories, navigateTo } = this.props;
-        console.log('result categories', results, categories);
 
         return (
             <div className='container-fluid'>
