@@ -8,24 +8,38 @@ class Login extends React.Component {
         super(props);
     }
 
+    isValidEmail(email) {
+        return email.indexOf('@valtech.com') > -1;
+    }
+
     handleSubmit(e) {
         e.preventDefault();
+        let email = ReactDOM.findDOMNode(this.refs.email).value;
+        if (!this.isValidEmail(email)) {
+            toastr.error("Please enter a valid @valtech.com email address.");
+            return;
+        }
         this.props.auth.login({
             connection: 'Username-Password-Authentication',
             responseType: 'token',
-            email: ReactDOM.findDOMNode(this.refs.email).value,
+            email: email,
             password: ReactDOM.findDOMNode(this.refs.password).value
         }, function(err) {
             if (err) toastr.error("something went wrong: " + err.message);
         });
     }
 
-    signUp(){
+    signUp() {
         // calls auth0 signup api, sending new account data
+        let email = ReactDOM.findDOMNode(this.refs.email).value;
+        if (!this.isValidEmail(email)) {
+            toastr.error("Please enter a valid @valtech.com email address.");
+            return;
+        }
         this.props.auth.signup({
             connection: 'Username-Password-Authentication',
             responseType: 'token',
-            email: ReactDOM.findDOMNode(this.refs.email).value,
+            email: email,
             password: ReactDOM.findDOMNode(this.refs.password).value
         }, function(err) {
             if (err) toastr.error("something went wrong: " + err.message);
@@ -46,7 +60,7 @@ class Login extends React.Component {
                 <FormGroup controlId='email'>
                     <ControlLabel className='col-sm-2'>E-mail</ControlLabel>
                     <div className='col-sm-10'>
-                        <FormControl type='email' ref='email' placeholder='email@example.com' required/>
+                        <FormControl type='email' ref='email' placeholder='email@valtech.com' required/>
                     </div>
                 </FormGroup>
                 <FormGroup controlId='password'>
@@ -58,7 +72,6 @@ class Login extends React.Component {
                 <ButtonToolbar>
                     <Button type='submit' bsStyle='primary'>Sign In</Button>
                     <Button onClick={this.signUp.bind(this)}>Sign Up</Button>
-                    <Button bsStyle="link" onClick={this.googleLogin.bind(this)}>Login with Google</Button>
                 </ButtonToolbar>
             </Form>
         );

@@ -1,8 +1,8 @@
 import express from 'express';
-import { getConfig } from '../config';
+import { authCheck } from '../services/authService';
 import mongoose from 'mongoose';
-import jwt from 'express-jwt';
 import _ from 'lodash';
+
 import modelSuggestion from '../models/suggestion';
 import modelComment from '../models/comment';
 
@@ -10,12 +10,6 @@ import modelComment from '../models/comment';
 var router = express.Router();
 var Suggestion = mongoose.model('Suggestion');
 var Comment = mongoose.model('Comment');
-var config = getConfig();
-
-const authCheck = jwt({
-    secret: new Buffer(config.auth0Secret, 'base64'),
-    audience: config.auth0ClientId
-});
 
 // POST Suggestion
 router.post('/', authCheck, function(req, res, next) {
@@ -26,14 +20,15 @@ router.post('/', authCheck, function(req, res, next) {
     Suggestion.create({
         title: title,
         content: content,
-        author: author
+        author: author,
+        category: mongoose.Types.ObjectId(req.body.category)
     }, function (err, sugg) {
         if (err) return next(err);
-        console.log('suggestion id ' + sugg.id);
         res.send({ message: 'New suggestion created : <a href="/suggestion/' + sugg.id + '">click here</a>' } );
     });
 
 });
+
 
 // GET Top X suggestions
 router.get('/top/:count?', function (req, res, next) {

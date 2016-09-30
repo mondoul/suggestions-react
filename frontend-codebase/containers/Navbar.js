@@ -9,11 +9,14 @@ import SearchBar from '../components/SearchBar';
 import { openLoginModal, closeLoginModal, openNewModal, closeNewModal, logout } from '../actions/uiActions';
 import { queryUpdated, search } from '../actions/searchActions';
 import { createSuggestion } from '../actions/suggestionActions';
+import { fetchCategories } from '../actions/categoryActions';
 import AuthService from '../utils/AuthService';
 
 class Navbar extends Component {
 
     componentDidMount() {
+        const {fetchCategories } = this.props;
+        fetchCategories();
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
@@ -29,7 +32,7 @@ class Navbar extends Component {
 
         const { onLogoutClick, onLoginClick, onModalClose, onNewModalOpen, onNewModalClose,
                 showLogin, showNew, auth, isAuthenticated, query, onSearch,
-                savingSuggestionPending, handleSubmit, isFetching} = this.props;
+                savingSuggestionPending, handleSubmit, isFetching, categories } = this.props;
 
         return (
             <nav className='navbar navbar-default navbar-static-top'>
@@ -46,8 +49,12 @@ class Navbar extends Component {
                 </div>
                 <div id='navbar' className='navbar-collapse collapse'>
                     {
-                        isAuthenticated &&
+                        isAuthenticated && categories.length > 0 &&
                         <button type="button" className="btn btn-success navbar-btn" onClick={onNewModalOpen}>New</button>
+                    }
+                    {
+                        isAuthenticated && categories.length == 0 &&
+                        <button type="button" className="btn btn-success navbar-btn disabled" data-toggle='tooltip' data-placement='bottom' title='Please Create a category first'>New</button>
                     }
                     {
                         !isAuthenticated &&
@@ -67,7 +74,7 @@ class Navbar extends Component {
                     <Login auth={auth} />
                 </Modal>
                 <Modal title='Create a new Suggestion' showModal={showNew} close={onNewModalClose}>
-                    <EditSuggestion savingSuggestionPending={savingSuggestionPending} cancel={onNewModalClose} handleSubmit={handleSubmit}/>
+                    <EditSuggestion savingSuggestionPending={savingSuggestionPending} cancel={onNewModalClose} handleSubmit={handleSubmit} categories={categories}/>
                 </Modal>
             </nav>
         );
@@ -93,6 +100,9 @@ function mapDispatchToProps(dispatch) {
         onModalClose: () => dispatch(closeLoginModal()),
         onNewModalOpen: () => dispatch(openNewModal()),
         onNewModalClose: () => dispatch(closeNewModal()),
+        fetchCategories: () => {
+            dispatch(fetchCategories());
+        },
         onSearch: (event) => {
             event.preventDefault();
             let query = event.currentTarget.value || '';
@@ -103,9 +113,9 @@ function mapDispatchToProps(dispatch) {
                 dispatch(push('/'));
             }
         },
-        handleSubmit: (title, content, isAnonymous) => {
-            if (title && content) {
-                dispatch(createSuggestion(title, content, isAnonymous))
+        handleSubmit: (category, title, content, isAnonymous) => {
+            if (category && title && content) {
+                dispatch(createSuggestion(category, title, content, isAnonymous))
             }
         },
     }
@@ -114,13 +124,16 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
     const { showLogin, showNew, isAuthenticated, savingSuggestionPending } = state.ui;
     const { query, isFetching } = state.search;
+    const { items: categories } = state.categories;
+    console.log('categories', categories);
     return {
         showLogin,
         showNew,
         isAuthenticated,
         savingSuggestionPending,
         query,
-        isFetching
+        isFetching,
+        categories
     };
 }
 

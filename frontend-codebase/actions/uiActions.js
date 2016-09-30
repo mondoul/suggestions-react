@@ -13,6 +13,12 @@ export function openNewModal() {
     }
 }
 
+export function openNewCategoryModal() {
+    return {
+        type:actions.OPEN_NEW_CATEGORY
+    }
+}
+
 export function openEditModal() {
     return {
         type:actions.OPEN_EDIT
@@ -28,6 +34,12 @@ export function closeLoginModal() {
 export function closeNewModal() {
     return {
         type:actions.CLOSE_NEW
+    }
+}
+
+export function closeNewCategoryModal() {
+    return {
+        type:actions.CLOSE_NEW_CATEGORY
     }
 }
 

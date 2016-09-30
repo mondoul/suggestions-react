@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const suggestionSchema = new mongoose.Schema({
     title: String,
@@ -7,7 +8,8 @@ const suggestionSchema = new mongoose.Schema({
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
     likes: { type: Number, default: 0},
-    voters: []
+    voters: [],
+    category: {type: ObjectId, index: true }
 });
 
 // create a query for comments with a blogpost _id matching `id`

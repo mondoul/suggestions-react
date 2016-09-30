@@ -14,7 +14,6 @@ export default class Suggestions extends Component {
         }
 
         suggestion.title = title;
-
         return (
             <SuggestionSummary key={i} suggestion={suggestion} navigateTo={navigateTo} />
         );

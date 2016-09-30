@@ -7,7 +7,8 @@ class Search extends Component {
 
     render() {
 
-        const { isFetching, results, navigateTo } = this.props;
+        const { isFetching, results, categories, navigateTo } = this.props;
+        console.log('result categories', results, categories);
 
         return (
             <div className='container-fluid'>
@@ -20,8 +21,14 @@ class Search extends Component {
                                     <span>In progress ...</span>
                             }
                             {
-                                !isFetching &&
-                                    <Suggestions suggestions={results} navigateTo={navigateTo} />
+                                !isFetching && categories.map((cat) => {
+                                    return (
+                                        <div className='resultGroup'>
+                                            <h3>{cat.title}</h3>
+                                            <Suggestions suggestions={results.filter(r => {return r.category === cat._id})} navigateTo={navigateTo} />
+                                        </div>
+                                    )
+                                })
                             }
                         </div>
                     </div>
@@ -39,8 +46,11 @@ Search.propTypes = {
 
 function mapStateToProps(state) {
     const { results, isFetching} = state.search;
+    const resultCategories = [...new Set(results.map(suggestion => suggestion.category))]; // extract categories
+    const categories = state.categories.items.filter((cat) => {return resultCategories.includes(cat._id)});
     return {
         results,
+        categories,
         isFetching
     };
 }

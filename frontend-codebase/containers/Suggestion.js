@@ -8,6 +8,7 @@ import EditSuggestion from '../components/EditSuggestion';
 import CommentForm from '../components/CommentForm';
 import CommentList from '../components/CommentList';
 import Modal from '../components/Modal';
+import { getCategory } from '../utils/CategoryHelper';
 
 class Suggestion extends Component {
     constructor(props) {
@@ -88,7 +89,12 @@ Suggestion.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     const id = ownProps.params.suggestionId;
-    const suggestion = state.suggestions.items.find(el => { return el._id === id; }) || {};
+    const stateSuggestion = state.suggestions.items.find(el => { return el._id === id; }) || {};
+
+    let suggestion = Object.assign({}, stateSuggestion); // don't mutate the state
+    if (stateSuggestion !== {}) {
+        Object.assign(suggestion, { categoryTitle: getCategory(state, suggestion._id)});
+    }
     const comments = state.comments[id] ?  state.comments[id] : [];
     const { isFetching:isFetchingComments, isSaving, isSaved } = state.comments;
     const { isAuthenticated, savingSuggestionPending, showEdit } = state.ui;

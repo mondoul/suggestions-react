@@ -1,19 +1,12 @@
 import express from 'express';
-import { getConfig } from '../config';
+import { authCheck } from '../services/authService';
 import mongoose from 'mongoose';
-import jwt from 'express-jwt';
 import modelSuggestion from '../models/suggestion';
 import modelComment from '../models/comment';
 
 var router = express.Router();
 var Suggestion = mongoose.model('Suggestion');
 var Comment = mongoose.model('Comment');
-var config = getConfig();
-
-const authCheck = jwt({
-    secret: new Buffer(config.auth0Secret, 'base64'),
-    audience: config.auth0ClientId
-});
 
 const pageSize = 10;
 

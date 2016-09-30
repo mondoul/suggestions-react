@@ -24,6 +24,7 @@ export function suggestions(state = {
         }
         case RECEIVE_A_SUGGESTION: {
             return Object.assign({}, state, {
+                isFetching: false,
                 items: [
                     action.result.suggestion,
                     ...state.items
@@ -92,6 +93,3 @@ export function suggestionsByFilter(state = {}, action) {
             return state;
     }
 }
-
-
-

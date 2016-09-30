@@ -29,16 +29,30 @@ class EditSuggestion extends Component {
         let title = ReactDOM.findDOMNode(this.refs.title).value.trim();
         let content = ReactDOM.findDOMNode(this.refs.suggestionBody).value.trim();
         let isAnonymous = ReactDOM.findDOMNode(this.refs.isAnonymous).checked;
+        let category = ReactDOM.findDOMNode(this.refs.chosenCategory);
+        let selectedCategory = category.options[category.selectedIndex].value;
 
-        handleSubmit(title, content, isAnonymous);
+        handleSubmit(selectedCategory, title, content, isAnonymous);
     }
 
     render() {
 
-        const { cancel, savingSuggestionPending } = this.props;
+        const { cancel, savingSuggestionPending, categories } = this.props;
 
         return (
             <Form onSubmit={this.saveChanges.bind(this)} className='form-horizontal new-form'>
+                <FormGroup controlId='category'>
+                    <ControlLabel className='col-sm-4'>Category</ControlLabel>
+                    <div className='col-sm-8'>
+                        <FormControl componentClass="select" placeholder="Choose a category" ref='chosenCategory'>
+                            { categories.map((cat, i) => {
+                                return (
+                                  <option key={i} value={cat._id}>{cat.title}</option>
+                                );
+                            }) }
+                        </FormControl>
+                    </div>
+                </FormGroup>
                 <FormGroup controlId='title'>
                     <ControlLabel className='col-sm-4'>Title</ControlLabel>
                     <div className='col-sm-8'>
@@ -79,7 +93,8 @@ EditSuggestion.propTypes = {
     savingSuggestionPending: PropTypes.bool.isRequired,
     cancel: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    suggestion: PropTypes.object
+    suggestion: PropTypes.object,
+    categories: PropTypes.array
 };
 
 export default EditSuggestion;

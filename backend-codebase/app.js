@@ -9,6 +9,7 @@ import favicon from 'serve-favicon';
 import { getConfig } from './config';
 import suggestions from './routes/suggestions';
 import comments from './routes/comments';
+import categories from './routes/categories';
 
 const app = express();
 
@@ -40,6 +41,7 @@ mongoose.connection.on('error', () => {
 // Api routes
 app.use('/api/suggestions', suggestions);
 app.use('/api/comments', comments);
+app.use('/api/categories', categories);
 
 // Render the index page for all routes
 app.get('*', (req, res) => {
