@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon ./bin/www --exec babel-node"
+    "start": "nodemon ./bin/www --exec babel-node",
+    "build": "babel . -d dist --ignore public,node_modules,dist",
+    "serve": "node dist/bin/www"
   },
   "babel": {
     "presets": [

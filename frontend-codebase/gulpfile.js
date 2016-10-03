@@ -16,10 +16,12 @@ var watchify = require('watchify');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
+var replace = require('gulp-replace');
 var path = require('./path');
+var envify = require('envify');
 require('babel-core/register');
 
-var production = process.env.NODE_ENV === 'production';
+var production = false;
 
 var dependencies = [
     'alt',
@@ -28,6 +30,24 @@ var dependencies = [
     'react-router',
     'lodash'
 ];
+
+function getEnvParams() {
+    process.env.HOME_URL = 'http://localhost';
+    process.env.API_URL = 'http://localhost/api';
+
+    if (!production) {
+        return {
+            HOME_URL: 'http://localhost',
+            API_URL: 'http://localhost/api'
+        };
+    }
+
+    // AWS Config
+    return {
+        HOME_URL: 'http://ec2-52-91-76-19.compute-1.amazonaws.com',
+        API_URL: 'http://ec2-52-91-76-19.compute-1.amazonaws.com/api'
+    }
+}
 
 /*
  |--------------------------------------------------------------------------
@@ -65,6 +85,7 @@ gulp.task('browserify', ['browserify-vendor'], function() {
     return browserify({ entries: path.js.entries, debug: !production })
         .external(dependencies)
         .transform(babelify, { presets: ['es2015', 'react'] })
+        .transform(envify, getEnvParams())
         .bundle()
         .pipe(source('bundle.js'))
         .pipe(buffer())
@@ -139,20 +160,11 @@ gulp.task('clean', function(){
         .pipe(clean({force: true}));
 });
 
-gulp.task('apply-prod-environment', function() {
-    process.stdout.write("Setting NODE_ENV to 'production'" + "\n");
-    process.env.NODE_ENV = 'production';
-    process.env.HOME_URL = 'http://http://ec2-54-88-48-118.compute-1.amazonaws.com/';
-    process.env.API_URL = 'http://http://ec2-54-88-48-118.compute-1.amazonaws.com/api';
-    if (process.env.NODE_ENV != 'production') {
-        throw new Error("Failed to set NODE_ENV to production!!!!");
-    } else {
-        process.stdout.write("Successfully set NODE_ENV to production" + "\n");
-    }
+gulp.task('set-production-deploy', function () {
+   production = true;
 });
 
-gulp.task('deploy', ['clean', 'apply-prod-environment', 'build'], function () {
-
+gulp.task('aws-deploy', ['clean', 'set-production-deploy', 'build'], function () {
     gulp.src(path.deployFiles, { base: 'dist'})
         .pipe(gulp.dest(path.deploy));
 });
