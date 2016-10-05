@@ -50,15 +50,15 @@ class Navbar extends Component {
                 <div id='navbar' className='navbar-collapse collapse'>
                     {
                         isAuthenticated && categories.length > 0 &&
-                        <button type="button" className="btn btn-success navbar-btn" onClick={onNewModalOpen}>New</button>
+                        <button type="button" className="btn btn-success navbar-btn" onClick={onNewModalOpen}>New suggestion/question</button>
                     }
                     {
                         isAuthenticated && categories.length == 0 &&
-                        <button type="button" className="btn btn-success navbar-btn disabled" data-toggle='tooltip' data-placement='bottom' title='Please Create a category first'>New</button>
+                        <button type="button" className="btn btn-success navbar-btn disabled" data-toggle='tooltip' data-placement='bottom' title='Please Create a category first'>New suggestion/question</button>
                     }
                     {
                         !isAuthenticated &&
-                        <button type="button" className="btn btn-success navbar-btn disabled" data-toggle='tooltip' data-placement='bottom' title='Login or Sign up to post a new suggestion'>New</button>
+                        <button type="button" className="btn btn-success navbar-btn disabled" data-toggle='tooltip' data-placement='bottom' title='Login or Sign up to post a new suggestion'>New suggestion/question</button>
                     }
                     {
                         isAuthenticated &&

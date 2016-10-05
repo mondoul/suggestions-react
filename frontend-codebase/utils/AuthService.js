@@ -23,6 +23,7 @@ class AuthService {
     }
 
     signup(params, onError){
+        params.scope = 'openid email'; // adding the email to the JWT
         this.auth0.signup(params, onError);
     }
 

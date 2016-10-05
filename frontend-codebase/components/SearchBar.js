@@ -11,7 +11,7 @@ class SearchBar extends Component {
         return (
             <form ref='searchForm' className='navbar-form navbar-right animated' onSubmit={onSearch}>
                 <div className='input-group'>
-                    <input type='text' className='form-control' placeholder='Search suggestions...' ref='searchQuery' value={query} onChange={onSearch} />
+                    <input type='text' className='form-control' placeholder='Search suggestions/questions...' ref='searchQuery' value={query} onChange={onSearch} />
                     <span className='input-group-btn'>
                         <button className='btn btn-default' onClick={onSearch}>
                             <span className={className}></span>

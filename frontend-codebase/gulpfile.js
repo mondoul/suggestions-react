@@ -104,6 +104,7 @@ gulp.task('browserify-watch', ['browserify-vendor'], function() {
     var bundler = watchify(browserify({ entries: path.js.entries, debug: true }, watchify.args));
     bundler.external(dependencies);
     bundler.transform(babelify, { presets: ['es2015', 'react'] });
+    bundler.transform(envify, getEnvParams());
     bundler.on('update', rebundle);
     return rebundle();
 

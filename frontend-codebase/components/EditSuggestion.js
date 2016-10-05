@@ -54,15 +54,15 @@ class EditSuggestion extends Component {
                     </div>
                 </FormGroup>
                 <FormGroup controlId='title'>
-                    <ControlLabel className='col-sm-4'>Title</ControlLabel>
+                    <ControlLabel className='col-sm-4'>Suggestion/Question</ControlLabel>
                     <div className='col-sm-8'>
-                        <FormControl type='text' ref='title' placeholder='Suggestion Title' required/>
+                        <FormControl type='text' ref='title' placeholder='Suggestion/Question' required/>
                     </div>
                 </FormGroup>
                 <FormGroup controlId='suggestionBody'>
-                    <ControlLabel className='col-sm-4'>Suggestion</ControlLabel>
+                    <ControlLabel className='col-sm-4'>Comments</ControlLabel>
                     <div className='col-sm-8'>
-                        <FormControl componentClass='textarea' rows='5' ref='suggestionBody' placeholder='Type your suggestion here...' required/>
+                        <FormControl componentClass='textarea' rows='5' ref='suggestionBody' placeholder='Comments' required/>
                     </div>
                 </FormGroup>
                 <FormGroup>
