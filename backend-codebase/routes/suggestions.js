@@ -39,6 +39,7 @@ router.get('/top/:count?', function (req, res, next) {
         .sort('-likes')
         .limit(top)
         .select('-voters')
+        .populate('category')
         .exec(function(err, data) {
             if (err) return next(err);
 
@@ -56,6 +57,7 @@ router.get('/last/:count?', function (req, res, next) {
         .sort('-created')
         .limit(last)
         .select('-voters')
+        .populate('category')
         .exec(function(err, data) {
             if (err) return next(err);
 
@@ -73,6 +75,7 @@ router.get('/find', function (req, res, next) {
                    { 'author' : { $regex: re }}])
               .sort('-created')
               .select('-voters')
+              .populate('category')
               .exec(function(err, data) {
                   if (err) return next(err);
 
@@ -84,7 +87,7 @@ router.get('/find', function (req, res, next) {
 router.get('/:suggestion_id', function(req, res, next) {
     var id = req.params.suggestion_id;
 
-    Suggestion.findById(id).select('-voters').exec(function (err, sugg) {
+    Suggestion.findById(id).select('-voters').populate('category').exec(function (err, sugg) {
         if (err) return next(err);
 
         if (!sugg) return next(); // 404

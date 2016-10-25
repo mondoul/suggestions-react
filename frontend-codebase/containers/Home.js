@@ -123,7 +123,7 @@ function mapStateToProps(state) {
                         : 0;
 
     const filteredSuggestions = selectedCategory == null ? []
-                                    : state.suggestions.items.filter((elt) => { return elt.category == selectedCategory;});
+                                    : state.suggestions.items.filter((elt) => { return elt.category._id == selectedCategory;});
 
     return {
         isAuthenticated,

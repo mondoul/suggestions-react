@@ -24,7 +24,7 @@ class Search extends Component {
                                     return (
                                         <div className='resultGroup'>
                                             <h3>{cat.title}</h3>
-                                            <Suggestions suggestions={results.filter(r => {return r.category === cat._id})} navigateTo={navigateTo} />
+                                            <Suggestions suggestions={results.filter(r => {return r.category._id === cat._id})} navigateTo={navigateTo} />
                                         </div>
                                     )
                                 })
@@ -45,7 +45,7 @@ Search.propTypes = {
 
 function mapStateToProps(state) {
     const { results, isFetching} = state.search;
-    const resultCategories = [...new Set(results.map(suggestion => suggestion.category))]; // extract categories
+    const resultCategories = [...new Set(results.map(suggestion => suggestion.category._id))]; // extract categories
     const categories = state.categories.items.filter((cat) => {return resultCategories.includes(cat._id)});
     return {
         results,

@@ -9,7 +9,7 @@ const suggestionSchema = new mongoose.Schema({
     updated: { type: Date, default: Date.now },
     likes: { type: Number, default: 0},
     voters: [],
-    category: {type: ObjectId, index: true }
+    category: {type: ObjectId, index: true, ref: 'Category' }
 });
 
 // create a query for comments with a blogpost _id matching `id`

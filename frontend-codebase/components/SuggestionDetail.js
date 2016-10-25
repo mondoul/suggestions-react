@@ -10,8 +10,8 @@ class SuggestionDetail extends Component {
         return (
             <div className='suggestion-component-container'>
                 <h2>{suggestion.title}
-                    { suggestion.categoryTitle !== null &&
-                        <span className="label label-info pull-right">{suggestion.categoryTitle}</span>
+                    { suggestion.category.title !== null &&
+                        <span className="label label-info pull-right">{suggestion.category.title}</span>
                     }
                 </h2>
                 {
